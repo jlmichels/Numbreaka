@@ -62,7 +62,7 @@ public class GameFrame extends JFrame {
     this.numbreaka = numbreaka;
     this.gridX = gridX;
     this.gridY = gridY;
-    menuObjectMouseListener = new MenuObjectMouseListener(numbreaka, this, HIGHLIGHT_COLOR); // change to method
+    menuObjectMouseListener = new MenuObjectMouseListener(numbreaka, this);
     gridSquareMouseListener = new GridSquareMouseListener(numbreaka);
     firstInitials = "";
     secondInitials = "";
@@ -512,5 +512,9 @@ public class GameFrame extends JFrame {
   
   public LineBorder getLineBorder() {
     return BLACK_LINE_BORDER;
+  }
+  
+  public void highlight(JLabel jLabel) {
+    jLabel.setForeground(HIGHLIGHT_COLOR);
   }
 }

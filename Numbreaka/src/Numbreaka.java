@@ -163,15 +163,11 @@ public class Numbreaka {
   }
   
   public void processGridSquare(GridSquare gs) {
-    if (!gs.isBroken()) {
-      breakSquare(gs);
-      checkNeighbors(gs);
-      incrementCurrentNumber();
-      gameFrame.updateHelper();
-      checkIfGameOver();
-    } else {
-      // Ignore mouse action
-    }
+    breakSquare(gs);
+    checkNeighbors(gs);
+    incrementCurrentNumber();
+    gameFrame.updateHelper();
+    checkIfGameOver();
   }
   
   private void breakSquare(GridSquare gs) {
