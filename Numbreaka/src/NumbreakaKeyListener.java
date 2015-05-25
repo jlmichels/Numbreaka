@@ -31,7 +31,7 @@ class NumbreakaKeyListener implements KeyListener {
   public void keyReleased(KeyEvent keyEvent) {
     if (keyEvent.getKeyChar() == 'r') {
       gameFrame.getGameTitle().setForeground(Color.BLACK);
-      gameFrame.getGameTitle().setBorder(numbreaka.getLineBorder());
+      gameFrame.getGameTitle().setBorder(gameFrame.getLineBorder());
     }
   }
 

@@ -15,6 +15,10 @@ public class GridSquare extends JLabel {
   private GridSquare gridSquareLeft;
   private GridSquare gridSquareRight;
   
+  public enum Neighbor {
+    UP, DOWN, LEFT, RIGHT;
+  }
+  
   // Call JLabel's constructor and set ID number (Todo: use to place powerups)
   GridSquare (int id) {
     super();
@@ -22,17 +26,17 @@ public class GridSquare extends JLabel {
   }
   
   // Breaks grid square by setting isBroken true and background black
-  public void breakIt() {
+  public void breakSquare() {
     isBroken = true;
-    this.setBackground(Color.BLACK);
+    setBackground(Color.BLACK);
   }
   
   // Resets grid square to initial conditions
   public void reset(Color gameBackgroundColor) {
     isBroken = false;
-    this.setText("");
-    this.setBackground(gameBackgroundColor);
-    this.setForeground(Color.BLACK);
+    setText("");
+    setBackground(gameBackgroundColor);
+    setForeground(Color.BLACK);
   }
   
   // Returns ID of grid square
@@ -43,16 +47,34 @@ public class GridSquare extends JLabel {
   // Returns numerical value of grid square
   public int getValue() {
     // implement better error checking
-    if (this.getText().equals("")) {
+    if (getText().equals("")) {
       return 0;
     } else {
-      return Integer.parseInt(this.getText());
+      return Integer.parseInt(getText());
     }
   }
   
   // Returns broken status
   public boolean isBroken() {
     return isBroken;
+  }
+  
+  public boolean isEmpty() {
+    return getText().equals("");
+  }
+  
+  public void clear() {
+    setText("");
+  }
+  
+  public GridSquare getGridSquare(Neighbor neighbor) {
+    switch (neighbor) {
+      case UP: return gridSquareUp;
+      case DOWN: return gridSquareDown;
+      case LEFT: return gridSquareLeft;
+      case RIGHT: return gridSquareRight;
+      default: throw new IllegalArgumentException();
+    }
   }
   
   // Returns grid square above this grid square

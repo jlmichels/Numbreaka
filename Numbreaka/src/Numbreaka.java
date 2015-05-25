@@ -1,11 +1,5 @@
-import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.TreeMap;
 import java.util.prefs.Preferences;
-
-import javax.swing.*;
-import javax.swing.border.LineBorder;
 
   /*  
    * Known issues:
@@ -14,19 +8,17 @@ import javax.swing.border.LineBorder;
 
 public class Numbreaka {
   
-  // Declares instance variables
+  private static final int GRID_X = 5;
+  private static final int GRID_Y = 5;
+  private static final int NUMBER_OF_GRID_SQUARES = GRID_X * GRID_Y;
+  private static final TreeMap<Integer, String> HIGH_SCORES = new TreeMap<Integer, String>();
+  private static GameFrame gameFrame;
   private boolean gameOver = false;
   private boolean isHighScore;
   private int currentNumber = 1;
-  private final int gridX = 5;
-  private final int gridY = 5;
   private int gridSquaresFilled = 0;
-  private final int numberOfGridSquares = gridX*gridY;
   private int score = 0;
   private int currentHighScore = 0;
-  private GameFrame gameFrame;
-  private final TreeMap<Integer, String> highScores = new TreeMap<Integer, String>();
-  private LineBorder blackLineBorder = new LineBorder(Color.BLACK);
   private Preferences preferences;
 
   public static void main (String[] args) {    
@@ -37,7 +29,7 @@ public class Numbreaka {
   private void go() {
     formatFont();
     getPreferences();
-    gameFrame = new GameFrame(this, gridX, gridY);
+    gameFrame = new GameFrame(this, GRID_X, GRID_Y);
   }
   
   private void formatFont() {
@@ -58,11 +50,12 @@ public class Numbreaka {
     String thirdInitials = preferences.get("thirdInitials", "AAA");
     
     // Sets highscores from preferences
-    highScores.put(firstScore, firstInitials);
-    highScores.put(secondScore, secondInitials);
-    highScores.put(thirdScore, thirdInitials);
+    HIGH_SCORES.put(firstScore, firstInitials);
+    HIGH_SCORES.put(secondScore, secondInitials);
+    HIGH_SCORES.put(thirdScore, thirdInitials);
   }
   
+  // Only set on game close or error?
   public void setPreferences(String firstInitials, int firstScore, String secondInitials, int secondScore, String thirdInitials, int thirdScore) {
       preferences.put("firstInitials", firstInitials);
       preferences.putInt("firstScore", firstScore);
@@ -72,7 +65,6 @@ public class Numbreaka {
       preferences.putInt("thirdScore", thirdScore);
   }
   
-  // Resets game to initial conditions when 'r' is pressed
   public void resetGame() {
     gameFrame.reset();
     gridSquaresFilled = 0;
@@ -83,26 +75,27 @@ public class Numbreaka {
   }  
 
   
+  // Gridsquares should be created and handled in Numbreaka?
   // Calculates final score by summing each grid square
   private int calculateScore() {
-    int sum = 0;
+    int finalScore = 0;
     
     GridSquare[][] gridSquares = gameFrame.getGridSquares();
-    for (int i = 0; i < gridY; i++) {
-      for (int j = 0; j < gridX; j++) {
-        sum = gridSquares[i][j].getValue() + sum;
+    for (int i = 0; i < GRID_X; i++) {
+      for (int j = 0; j < GRID_Y; j++) {
+        finalScore = gridSquares[i][j].getValue() + finalScore;
       }
     }
-    return sum;
+    return finalScore;
   }
 
   // Checks if score should be in top 3 and puts in if so
   public void processScore(int score, String initials) {
-    if (score >= highScores.firstKey()) {
+    if (score >= HIGH_SCORES.firstKey()) {
       isHighScore = true;
-      highScores.remove(highScores.firstKey());
+      HIGH_SCORES.remove(HIGH_SCORES.firstKey());
     }
-    highScores.put(score, initials);
+    HIGH_SCORES.put(score, initials);
   }
   
   public int getCurrentHighScore() {
@@ -110,7 +103,7 @@ public class Numbreaka {
   }
   
   public TreeMap<Integer, String> getHighScores() {
-    return highScores;
+    return HIGH_SCORES;
   }
   
   public boolean getGameOver() {
@@ -141,20 +134,12 @@ public class Numbreaka {
     setPreferences(firstInitials, firstScore, secondInitials, secondScore, thirdInitials, thirdScore);
   }
   
-  public LineBorder getLineBorder() {
-    return blackLineBorder;
-  }
-
-  public void setLineBorder(LineBorder lineBorder) {
-    this.blackLineBorder = lineBorder;
-  }
-  
   public int getNumberOfGridSquares() {
-    return numberOfGridSquares;
+    return NUMBER_OF_GRID_SQUARES;
   }
   
   public void checkIfGameOver() {
-    if (getGridSquaresFilled() == (numberOfGridSquares)) {
+    if (getGridSquaresFilled() == (NUMBER_OF_GRID_SQUARES)) {
       gameOver = true;
       gameFrame.highlightNumbers();
       score = calculateScore();
@@ -170,10 +155,46 @@ public class Numbreaka {
     int defaultScore2 = -2;
     int defaultScore3 = -3;
     
-    highScores.clear();
-    highScores.put(defaultScore1, "AAA");
-    highScores.put(defaultScore2, "AAA");
-    highScores.put(defaultScore3, "AAA");
+    HIGH_SCORES.clear();
+    HIGH_SCORES.put(defaultScore1, "AAA");
+    HIGH_SCORES.put(defaultScore2, "AAA");
+    HIGH_SCORES.put(defaultScore3, "AAA");
     this.setPreferences(defaultInitials, defaultScore1, defaultInitials, defaultScore2, defaultInitials, defaultScore3);
+  }
+  
+  public void processGridSquare(GridSquare gs) {
+    if (!gs.isBroken()) {
+      breakSquare(gs);
+      checkNeighbors(gs);
+      incrementCurrentNumber();
+      gameFrame.updateHelper();
+      checkIfGameOver();
+    } else {
+      // Ignore mouse action
+    }
+  }
+  
+  private void breakSquare(GridSquare gs) {
+    gs.breakSquare();
+    if (gs.isEmpty()) {
+      incrementGridSquaresFilled();
+    } else {
+      gs.clear();
+    }
+  }
+  
+  private void checkNeighbors(GridSquare gs) {
+    for (GridSquare.Neighbor neighbor : GridSquare.Neighbor.values()) {
+      GridSquare neighboringGridSquare = gs.getGridSquare(neighbor);
+      
+      if (neighboringGridSquare != null && !neighboringGridSquare.isBroken()) {
+        if (neighboringGridSquare.isEmpty()) {
+          neighboringGridSquare.setText(Integer.toString(currentNumber));
+          incrementGridSquaresFilled();
+        } else {
+          neighboringGridSquare.setText(Integer.toString(neighboringGridSquare.getValue() + currentNumber));
+        }
+      }
+    }
   }
 }

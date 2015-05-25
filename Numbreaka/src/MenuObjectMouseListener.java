@@ -17,12 +17,6 @@ public class MenuObjectMouseListener implements MouseListener {
     this.gameFrame = gameFrame;
     this.highlightColor = highlightColor;
   }
-  
-  @Override
-  public void mouseClicked(MouseEvent e) {
-    // TODO Auto-generated method stub
-    
-  }
 
   @Override
   public void mouseEntered(MouseEvent e) {
@@ -86,5 +80,10 @@ public class MenuObjectMouseListener implements MouseListener {
     } else if (menuObject.getText().equals("NUMBREAKA")) {
       gameFrame.getGameTitle().setForeground(Color.BLACK);
     }
+  }
+  
+  
+  @Override
+  public void mouseClicked(MouseEvent e) {
   }
 }
