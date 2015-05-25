@@ -12,13 +12,11 @@ import javax.swing.border.LineBorder;
    *   - Change highscores from TreeMap to -> insert something here
    */
 
-public class Numbreaka implements MouseListener {
+public class Numbreaka {
   
   // Declares instance variables
   private boolean gameOver = false;
   private boolean isHighScore;
-  private final Color gameBackgroundColor = new Color(202, 221, 221);
-  private final Color highlightColor = new Color(134, 39, 39);
   private int currentNumber = 1;
   private final int gridX = 5;
   private final int gridY = 5;
@@ -84,150 +82,6 @@ public class Numbreaka implements MouseListener {
     gameOver = false;
   }  
 
-  @Override
-  public void mouseClicked(MouseEvent e) {
-  }
-
-  @Override
-  public void mouseEntered(MouseEvent e) {
-    if (e.getSource() instanceof JLabel){
-      JLabel temp = (JLabel) e.getSource();
-      if (temp.getText().equals("START")) {
-        temp.setForeground(highlightColor);
-      } else if (temp.getText().equals("QUIT")) {
-        temp.setForeground(highlightColor);
-      } else if (temp.getText().equals("HIGH SCORES")) {
-        temp.setForeground(highlightColor);
-      } else if (temp.getText().equals("RETRY")) {
-        temp.setForeground(highlightColor);
-      } else if (temp.getText().equals("Return to Main Menu")) {
-        temp.setForeground(highlightColor);
-      }
-    }
-  }
-
-  @Override
-  public void mouseExited(MouseEvent e) {
-    if (e.getSource() instanceof JLabel){
-      JLabel temp = (JLabel) e.getSource();
-      if (temp.getText().equals("START")) {
-        temp.setForeground(Color.DARK_GRAY);
-      } else if (temp.getText().equals("QUIT")) {
-        temp.setForeground(Color.DARK_GRAY);
-      } else if (temp.getText().equals("HIGH SCORES")) {
-        temp.setForeground(Color.DARK_GRAY);
-      } else if (temp.getText().equals("RETRY")) {
-        temp.setForeground(Color.BLACK);
-      } else if (temp.getText().equals("Return to Main Menu")) {
-        temp.setForeground(Color.BLACK);
-      }
-    }
-  }
-
-  // Todo: Split into separate mouselisteners for grid squares and menu items
-  @Override
-  public void mousePressed(MouseEvent e) {
-    if (!gameOver) {
-      
-      // Won't need this is using a separate MouseListener
-      if (e.getSource() instanceof GridSquare) {
-        GridSquare gs = (GridSquare) e.getSource();
-        
-        // If grid square is not broken, break it and check surrounding grid squares
-        // If grid square is broken, ignore mouse press
-        if (!gs.isBroken()) {
-          
-          // Break it and increment gridSquareFilled if empty, else clear number
-          gs.breakIt();
-          if (gs.getText().equals("")) {
-            gridSquaresFilled++;
-          } else {
-            gs.setText("");
-          }
-                  
-          // If grid square above is not out, if empty set number to current number, else set to its number + current number
-          if (gs.getGridSquareUp() != null && !gs.getGridSquareUp().isBroken()) {
-            if (gs.getGridSquareUp().getText().equals("")) {
-              gs.getGridSquareUp().setText(Integer.toString(currentNumber));
-              gridSquaresFilled++;
-            } else {
-              gs.getGridSquareUp().setText(Integer.toString(gs.getGridSquareUp().getValue() + currentNumber));
-            }
-          }
-          
-          // If grid square to right is not out, if empty set number to current number, else set to its number + current number
-          if (gs.getGridSquareRight() != null && !gs.getGridSquareRight().isBroken()) {
-            if (gs.getGridSquareRight().getText().equals("")) {
-              gs.getGridSquareRight().setText(Integer.toString(currentNumber));
-              gridSquaresFilled++;
-            } else {
-              gs.getGridSquareRight().setText(Integer.toString(gs.getGridSquareRight().getValue() + currentNumber));
-            }
-          }
-          
-          // If grid square to left is not out, if empty set number to current number, else set to its number + current number
-          if (gs.getGridSquareLeft() != null && !gs.getGridSquareLeft().isBroken()) {
-            if (gs.getGridSquareLeft().getText().equals("")) {
-              gs.getGridSquareLeft().setText(Integer.toString(currentNumber));
-              gridSquaresFilled++;
-            } else {
-              gs.getGridSquareLeft().setText(Integer.toString(gs.getGridSquareLeft().getValue() + currentNumber));
-            }
-          }
-          
-          // If grid square below is not out, if empty set number to current number, else set to its number + current number
-          if (gs.getGridSquareDown() != null && !gs.getGridSquareDown().isBroken()) {
-            if (gs.getGridSquareDown().getText().equals("")) {
-              gs.getGridSquareDown().setText(Integer.toString(currentNumber));
-              gridSquaresFilled++;
-            } else {
-              gs.getGridSquareDown().setText(Integer.toString(gs.getGridSquareDown().getValue() + currentNumber));
-            }
-          }
-      
-          // Increment current number
-          currentNumber++;
-          
-          // Update helper
-          gameFrame.getLeftTitleBox().setText(Integer.toString(currentNumber));
-          
-          // Check if game over by comparing gridSquaresFilled to total number of grid squares
-          if (gridSquaresFilled == (numberOfGridSquares)) {
-            gameOver = true;
-            gameFrame.highlightNumbers();
-            score = calculateScore();
-            processScore(score, "JLM");
-            gameFrame.displayFinalScorePopup(score, isHighScore);
-            isHighScore = false;
-          }
-        }
-      } 
-    }
-    
-    // Process JLabels
-    if (e.getSource() instanceof JLabel) {
-      // Change start menu buttons to new class extending JLabel?
-      // Make a separate mouse listener to handle this stuff?
-      JLabel temp = (JLabel) e.getSource();
-      if (temp.getText().equals("START")) {
-        gameFrame.displayGameWindow();
-      } else if (temp.getText().equals("QUIT")) {
-        System.exit(0);
-      } else if (temp.getText().equals("HIGH SCORES")) {
-        gameFrame.displayHighScoresScreen();
-      } else if (temp.getText().equals("RETRY")) {
-        gameFrame.getGameTitle().setForeground(highlightColor);
-        resetGame();
-        gameFrame.displayGameWindow();
-      } else if (temp.getText().equals("NUMBREAKA")) {
-        gameFrame.getGameTitle().setForeground(highlightColor);
-        resetGame();
-        gameFrame.displayMainMenu();
-      } else if (temp.getText().equals("Return to Main Menu")) {
-        gameFrame.displayMainMenu();
-      }
-    }
-  }
   
   // Calculates final score by summing each grid square
   private int calculateScore() {
@@ -240,18 +94,6 @@ public class Numbreaka implements MouseListener {
       }
     }
     return sum;
-  }
-  
-  @Override
-  public void mouseReleased(MouseEvent e) {
-    if (e.getSource() instanceof JLabel) {
-      JLabel temp = (JLabel) e.getSource();
-      if (temp.getText().equals("RETRY")) {
-        gameFrame.getGameTitle().setForeground(Color.BLACK);
-      } else if (temp.getText().equals("NUMBREAKA")) {
-        gameFrame.getGameTitle().setForeground(Color.BLACK);
-      }
-    }
   }
 
   // Checks if score should be in top 3 and puts in if so
@@ -266,17 +108,33 @@ public class Numbreaka implements MouseListener {
   public int getCurrentHighScore() {
     return currentHighScore;
   }
-
-  public Color getGameBackgroundColor() {
-    return gameBackgroundColor;
-  }
-  
-  public Color getHighlightColor() {
-    return highlightColor;
-  }
   
   public TreeMap<Integer, String> getHighScores() {
     return highScores;
+  }
+  
+  public boolean getGameOver() {
+    return gameOver;
+  }
+  
+  public void setGameOver(boolean gameOver) {
+    this.gameOver = gameOver;
+  }
+  
+  public void incrementGridSquaresFilled() {
+    gridSquaresFilled++;
+  }
+  
+  public void incrementCurrentNumber() {
+    currentNumber++;
+  }
+  
+  public int getGridSquaresFilled() {
+    return gridSquaresFilled;
+  }
+  
+  public int getCurrentNumber() {
+    return currentNumber;
   }
   
   public void setHighScores(String firstInitials, int firstScore, String secondInitials, int secondScore, String thirdInitials, int thirdScore) {
@@ -289,6 +147,21 @@ public class Numbreaka implements MouseListener {
 
   public void setLineBorder(LineBorder lineBorder) {
     this.blackLineBorder = lineBorder;
+  }
+  
+  public int getNumberOfGridSquares() {
+    return numberOfGridSquares;
+  }
+  
+  public void checkIfGameOver() {
+    if (getGridSquaresFilled() == (numberOfGridSquares)) {
+      gameOver = true;
+      gameFrame.highlightNumbers();
+      score = calculateScore();
+      processScore(score, "JLM");
+      gameFrame.displayFinalScorePopup(score, isHighScore);
+      isHighScore = false;
+    }
   }
   
   public void resetHighScores() {

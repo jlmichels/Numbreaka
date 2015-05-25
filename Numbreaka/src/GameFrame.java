@@ -18,6 +18,8 @@ import javax.swing.WindowConstants;
 
 public class GameFrame extends JFrame {
   
+  private static final Color HIGHLIGHT_COLOR = new Color(134, 39, 39);
+  private static final Color GAME_BACKGROUND_COLOR = new Color(202, 221, 221);
   private boolean isHighScoresScreenInitialized = false;
   private static final long serialVersionUID = 1L; // necessary?
   private CardLayout cardLayout;
@@ -51,11 +53,15 @@ public class GameFrame extends JFrame {
   private String firstInitials;
   private String secondInitials;
   private String thirdInitials;
+  private final MenuObjectMouseListener menuObjectMouseListener;
+  private final GridSquareMouseListener gridSquareMouseListener;
     
   public GameFrame(Numbreaka numbreaka, int gridX, int gridY) {
     this.numbreaka = numbreaka;
     this.gridX = gridX;
     this.gridY = gridY;
+    menuObjectMouseListener = new MenuObjectMouseListener(numbreaka, this, HIGHLIGHT_COLOR); // change to method
+    gridSquareMouseListener = new GridSquareMouseListener(numbreaka, this);
     firstInitials = "";
     secondInitials = "";
     thirdInitials = "";
@@ -86,7 +92,7 @@ public class GameFrame extends JFrame {
 
     // Creates left box to hold current number
     leftTitleBox.setBorder(numbreaka.getLineBorder());
-    leftTitleBox.setBackground(numbreaka.getGameBackgroundColor());
+    leftTitleBox.setBackground(GAME_BACKGROUND_COLOR);
     leftTitleBox.setForeground(Color.BLACK);
     leftTitleBox.setMaximumSize(new Dimension(100, 100));
     leftTitleBox.setPreferredSize(new Dimension(100, 100));
@@ -96,8 +102,8 @@ public class GameFrame extends JFrame {
 
     // Creates right box to hold powerups
     rightTitleBox.setBorder(numbreaka.getLineBorder());
-    rightTitleBox.setBackground(numbreaka.getGameBackgroundColor());
-    rightTitleBox.setForeground(numbreaka.getHighlightColor());
+    rightTitleBox.setBackground(GAME_BACKGROUND_COLOR);
+    rightTitleBox.setForeground(HIGHLIGHT_COLOR);
     rightTitleBox.setMaximumSize(new Dimension(100, 100));
     rightTitleBox.setPreferredSize(new Dimension(100, 100));
     rightTitleBox.setHorizontalAlignment(SwingConstants.CENTER);
@@ -106,14 +112,14 @@ public class GameFrame extends JFrame {
     
     // Creates and designs main menu title
     gameTitle = new JLabel("NUMBREAKA");
-    gameTitle.setBackground(numbreaka.getGameBackgroundColor());
+    gameTitle.setBackground(GAME_BACKGROUND_COLOR);
     gameTitle.setForeground(Color.BLACK);
     gameTitle.setMaximumSize(new Dimension(300, 100));
     gameTitle.setPreferredSize(new Dimension(300, 100));
     gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
     gameTitle.setOpaque(true);
     gameTitle.setBorder(numbreaka.getLineBorder());
-    gameTitle.addMouseListener(numbreaka);
+    gameTitle.addMouseListener(menuObjectMouseListener);
     gameTitle.setFont(titleFont);
     
     titleBar.setSize(100,100);
@@ -137,32 +143,32 @@ public class GameFrame extends JFrame {
     
     mainMenu.setLayout(boxLayout);
     mainMenu.setOpaque(true);
-    mainMenu.setBackground(numbreaka.getGameBackgroundColor());
+    mainMenu.setBackground(GAME_BACKGROUND_COLOR);
     mainMenu.setBorder(numbreaka.getLineBorder());
     
     // Creates and designs START button
     JLabel startButton = new JLabel("START");
-    startButton.addMouseListener(numbreaka);
+    startButton.addMouseListener(menuObjectMouseListener);
     startButton.setHorizontalAlignment(SwingConstants.CENTER);
-    startButton.setBackground(numbreaka.getGameBackgroundColor());
+    startButton.setBackground(GAME_BACKGROUND_COLOR);
     startButton.setOpaque(true);
     startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
     startButton.setFont(buttonFont);
    
     // Designs highScoresButton
     highScoresButton = new JLabel("HIGH SCORES");
-    highScoresButton.addMouseListener(numbreaka);
+    highScoresButton.addMouseListener(menuObjectMouseListener);
     highScoresButton.setHorizontalAlignment(SwingConstants.CENTER);
-    highScoresButton.setBackground(numbreaka.getGameBackgroundColor());
+    highScoresButton.setBackground(GAME_BACKGROUND_COLOR);
     highScoresButton.setOpaque(true);
     highScoresButton.setAlignmentX(Component.CENTER_ALIGNMENT);
     highScoresButton.setFont(buttonFont);
     
     // Creates and designs QUIT button
     JLabel quitButton = new JLabel("QUIT");
-    quitButton.addMouseListener(numbreaka);
+    quitButton.addMouseListener(menuObjectMouseListener);
     quitButton.setHorizontalAlignment(SwingConstants.CENTER);
-    quitButton.setBackground(numbreaka.getGameBackgroundColor());
+    quitButton.setBackground(GAME_BACKGROUND_COLOR);
     quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
     quitButton.setOpaque(true);
     quitButton.setFont(buttonFont);
@@ -203,9 +209,9 @@ public class GameFrame extends JFrame {
       for (int j = 0; j < gridX; j++) {
         gridSquares[i][j] = new GridSquare(id);
         gridSquares[i][j].setBorder(numbreaka.getLineBorder());
-        gridSquares[i][j].addMouseListener(numbreaka);
+        gridSquares[i][j].addMouseListener(gridSquareMouseListener);
         gridSquares[i][j].setOpaque(true);
-        gridSquares[i][j].setBackground(numbreaka.getGameBackgroundColor());
+        gridSquares[i][j].setBackground(GAME_BACKGROUND_COLOR);
         gridSquares[i][j].setForeground(Color.BLACK);
         gridSquares[i][j].setHorizontalAlignment(SwingConstants.CENTER);
         gridSquares[i][j].setFont(gridSquareFont);
@@ -242,13 +248,13 @@ public class GameFrame extends JFrame {
 
     highScoresScreen.setLayout(boxLayout);
     highScoresScreen.setOpaque(true);
-    highScoresScreen.setBackground(numbreaka.getGameBackgroundColor());
+    highScoresScreen.setBackground(GAME_BACKGROUND_COLOR);
     highScoresScreen.setBorder(numbreaka.getLineBorder());
     
     // Creates and designs High Scores screen title
     JLabel highScoresTitle = new JLabel("HIGH SCORES");
     highScoresTitle.setHorizontalAlignment(SwingConstants.CENTER);
-    highScoresTitle.setBackground(numbreaka.getGameBackgroundColor());
+    highScoresTitle.setBackground(GAME_BACKGROUND_COLOR);
     highScoresTitle.setForeground(Color.BLACK);
     highScoresTitle.setOpaque(true);
     highScoresTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -257,8 +263,8 @@ public class GameFrame extends JFrame {
     // Creates and designs first high score text
     firstHighScore = new JLabel("");
     firstHighScore.setHorizontalAlignment(SwingConstants.LEFT);
-    firstHighScore.setBackground(numbreaka.getGameBackgroundColor());
-    firstHighScore.setForeground(numbreaka.getHighlightColor());
+    firstHighScore.setBackground(GAME_BACKGROUND_COLOR);
+    firstHighScore.setForeground(HIGHLIGHT_COLOR);
     firstHighScore.setOpaque(true);
     firstHighScore.setAlignmentX(Component.CENTER_ALIGNMENT);
     firstHighScore.setFont(buttonFont);
@@ -266,8 +272,8 @@ public class GameFrame extends JFrame {
     // Creates and designs second high score text
     secondHighScore = new JLabel("");
     secondHighScore.setHorizontalAlignment(SwingConstants.LEFT);
-    secondHighScore.setBackground(numbreaka.getGameBackgroundColor());
-    secondHighScore.setForeground(numbreaka.getHighlightColor());
+    secondHighScore.setBackground(GAME_BACKGROUND_COLOR);
+    secondHighScore.setForeground(HIGHLIGHT_COLOR);
     secondHighScore.setOpaque(true);
     secondHighScore.setAlignmentX(Component.CENTER_ALIGNMENT);
     secondHighScore.setFont(buttonFont);
@@ -275,8 +281,8 @@ public class GameFrame extends JFrame {
     // Creates and designs third high score text
     thirdHighScore = new JLabel("");
     thirdHighScore.setHorizontalAlignment(SwingConstants.LEFT);
-    thirdHighScore.setBackground(numbreaka.getGameBackgroundColor());
-    thirdHighScore.setForeground(numbreaka.getHighlightColor());
+    thirdHighScore.setBackground(GAME_BACKGROUND_COLOR);
+    thirdHighScore.setForeground(HIGHLIGHT_COLOR);
     thirdHighScore.setOpaque(true);
     thirdHighScore.setAlignmentX(Component.CENTER_ALIGNMENT);
     thirdHighScore.setFont(buttonFont);
@@ -284,11 +290,11 @@ public class GameFrame extends JFrame {
     // Creates and designs return to main menu button
     JLabel returnToMainMenu = new JLabel("Return to Main Menu");
     returnToMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
-    returnToMainMenu.setBackground(numbreaka.getGameBackgroundColor());
+    returnToMainMenu.setBackground(GAME_BACKGROUND_COLOR);
     returnToMainMenu.setForeground(Color.BLACK);
     returnToMainMenu.setOpaque(true);
     returnToMainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
-    returnToMainMenu.addMouseListener(numbreaka);
+    returnToMainMenu.addMouseListener(menuObjectMouseListener);
     returnToMainMenu.setFont(new Font("Calibri", Font.BOLD, 45));
     
     // Adds components to high scores screen
@@ -308,13 +314,13 @@ public class GameFrame extends JFrame {
 
     finalScoreScreen.setLayout(boxLayout);
     finalScoreScreen.setOpaque(true);
-    finalScoreScreen.setBackground(numbreaka.getGameBackgroundColor());
+    finalScoreScreen.setBackground(GAME_BACKGROUND_COLOR);
     finalScoreScreen.setBorder(numbreaka.getLineBorder());
     
     // Creates and designs High Scores screen title
     JLabel finalScoreTitle = new JLabel("FINAL SCORE");
     finalScoreTitle.setHorizontalAlignment(SwingConstants.CENTER);
-    finalScoreTitle.setBackground(numbreaka.getGameBackgroundColor());
+    finalScoreTitle.setBackground(GAME_BACKGROUND_COLOR);
     finalScoreTitle.setForeground(Color.BLACK);
     finalScoreTitle.setOpaque(true);
     finalScoreTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -323,8 +329,8 @@ public class GameFrame extends JFrame {
     // Creates and designs new high score text
     newHighScore = new JLabel("NEW HIGH SCORE!");
     newHighScore.setHorizontalAlignment(SwingConstants.CENTER);
-    newHighScore.setBackground(numbreaka.getGameBackgroundColor());
-    newHighScore.setForeground(numbreaka.getHighlightColor());
+    newHighScore.setBackground(GAME_BACKGROUND_COLOR);
+    newHighScore.setForeground(HIGHLIGHT_COLOR);
     newHighScore.setOpaque(true);
     newHighScore.setVisible(false);
     newHighScore.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -333,8 +339,8 @@ public class GameFrame extends JFrame {
     // Creates and designs current high score display text
     finalScoreDisplay = new JLabel("");
     finalScoreDisplay.setHorizontalAlignment(SwingConstants.CENTER);
-    finalScoreDisplay.setBackground(numbreaka.getGameBackgroundColor());
-    finalScoreDisplay.setForeground(numbreaka.getHighlightColor());
+    finalScoreDisplay.setBackground(GAME_BACKGROUND_COLOR);
+    finalScoreDisplay.setForeground(HIGHLIGHT_COLOR);
     finalScoreDisplay.setOpaque(true);
     finalScoreDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
     finalScoreDisplay.setFont(buttonFont);
@@ -342,11 +348,11 @@ public class GameFrame extends JFrame {
     // Creates and designs RETRY button
     JLabel retry = new JLabel("RETRY");
     retry.setHorizontalAlignment(SwingConstants.CENTER);
-    retry.setBackground(numbreaka.getGameBackgroundColor());
+    retry.setBackground(GAME_BACKGROUND_COLOR);
     retry.setForeground(Color.BLACK);
     retry.setOpaque(true);
     retry.setAlignmentX(Component.CENTER_ALIGNMENT);
-    retry.addMouseListener(numbreaka);
+    retry.addMouseListener(menuObjectMouseListener);
     retry.setFont(buttonFont);
        
     // Adds components to high scores screen
@@ -373,10 +379,10 @@ public class GameFrame extends JFrame {
     
     this.getContentPane().setLayout(boxLayout);
     this.getContentPane().add(titleBar);
-    this.getContentPane().setBackground(numbreaka.getGameBackgroundColor());
+    this.getContentPane().setBackground(GAME_BACKGROUND_COLOR);
     this.getContentPane().add(cardHolder);
     this.setTitle("Numbreaka v0.1");
-    this.addMouseListener(numbreaka);
+//    this.addMouseListener(menuObjectMouseListener);
     this.addKeyListener(new NumbreakaKeyListener(numbreaka, this));
     this.setBounds(400, 300, (gridX*gridSquareWidth+8), (gridY*gridSquareHeight)+gridY+128);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -390,7 +396,7 @@ public class GameFrame extends JFrame {
   public void highlightNumbers() {
     for (int i = 0; i < gridY; i++) {
       for (int j = 0; j < gridX; j++) {
-        gridSquares[i][j].setForeground(numbreaka.getHighlightColor());
+        gridSquares[i][j].setForeground(HIGHLIGHT_COLOR);
       }
     }
   }  
@@ -401,7 +407,7 @@ public class GameFrame extends JFrame {
     newHighScore.setVisible(false);
     for (int i = 0; i < gridY; i++) {
       for (int j = 0; j < gridX; j++) {
-        gridSquares[i][j].reset(numbreaka.getGameBackgroundColor());
+        gridSquares[i][j].reset(GAME_BACKGROUND_COLOR);
       }
     }
   }
@@ -492,5 +498,13 @@ public class GameFrame extends JFrame {
   
   public JLabel getGameTitle() {
     return gameTitle;
+  }
+  
+  public void updateHelper() {
+    getLeftTitleBox().setText(Integer.toString(numbreaka.getCurrentNumber()));
+  }
+  
+  public Color getHighlightColor() {
+    return HIGHLIGHT_COLOR;
   }
 }

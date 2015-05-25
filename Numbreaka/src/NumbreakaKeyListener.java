@@ -20,7 +20,7 @@ class NumbreakaKeyListener implements KeyListener {
       System.exit(0); // 0 means exiting on purpose, 1 means exiting due to error
     } else if (keyEvent.getKeyChar() == 'r') {
       // Resets game to initial conditions
-      gameFrame.getGameTitle().setForeground(numbreaka.getHighlightColor());
+      gameFrame.getGameTitle().setForeground(gameFrame.getHighlightColor());
       numbreaka.resetGame();
     } else if (keyEvent.getKeyChar() == 'h') {
       numbreaka.resetHighScores();
