@@ -22,8 +22,14 @@ public class GameFrame extends JFrame {
   private static final Color HIGHLIGHT_COLOR = new Color(134, 39, 39);
   private static final Color GAME_BACKGROUND_COLOR = new Color(202, 221, 221);
   private static final LineBorder BLACK_LINE_BORDER = new LineBorder(Color.BLACK);
-  private boolean isHighScoresScreenInitialized = false;
+  private static final int GRID_SQUARE_WIDTH = 100;
+  private static final int GRID_SQUARE_HEIGHT = 100;
   private static final long serialVersionUID = 1L; // necessary?
+  private final int gridX;
+  private final int gridY;
+  private final MenuObjectMouseListener menuObjectMouseListener;
+  private final GridSquareMouseListener gridSquareMouseListener;
+  private boolean isHighScoresScreenInitialized = false;
   private CardLayout cardLayout;
   private Font buttonFont;
   private Font titleFont;
@@ -32,10 +38,6 @@ public class GameFrame extends JFrame {
   private int firstScore;
   private int secondScore;
   private int thirdScore;
-  private int gridX;
-  private int gridY;
-  private int gridSquareWidth = 100;
-  private int gridSquareHeight = 100;
   private JLabel highScoresButton;
   private JLabel firstHighScore;
   private JLabel secondHighScore;
@@ -55,8 +57,6 @@ public class GameFrame extends JFrame {
   private String firstInitials;
   private String secondInitials;
   private String thirdInitials;
-  private final MenuObjectMouseListener menuObjectMouseListener;
-  private final GridSquareMouseListener gridSquareMouseListener;
     
   public GameFrame(Numbreaka numbreaka, int gridX, int gridY) {
     this.numbreaka = numbreaka;
@@ -386,30 +386,30 @@ public class GameFrame extends JFrame {
     this.setTitle("Numbreaka v0.1");
 //    this.addMouseListener(menuObjectMouseListener);
     this.addKeyListener(new NumbreakaKeyListener(numbreaka, this));
-    this.setBounds(400, 300, (gridX*gridSquareWidth+8), (gridY*gridSquareHeight)+gridY+128);
+    this.setBounds(400, 300, (gridX*GRID_SQUARE_WIDTH+8), (gridY*GRID_SQUARE_HEIGHT)+gridY+128);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.setAlwaysOnTop(true);
     this.setResizable(false);
     this.setVisible(true);
   }
-
-  // Turns all grid square numbers RED
-  // Not used anymore?
-  public void highlightNumbers() {
-    for (int i = 0; i < gridY; i++) {
-      for (int j = 0; j < gridX; j++) {
-        gridSquares[i][j].setForeground(HIGHLIGHT_COLOR);
-      }
-    }
-  }  
+//
+//  // Turns all grid square numbers RED
+//  // Not used anymore?
+//  public void highlightNumbers() {
+//    for (int i = 0; i < gridY; i++) {
+//      for (int j = 0; j < gridX; j++) {
+//        gridSquares[i][j].setForeground(HIGHLIGHT_COLOR);
+//      }
+//    }
+//  }  
   
   // Resets game to initial conditions
   public void reset() {
     highScoresButton.setForeground(Color.DARK_GRAY);
     newHighScore.setVisible(false);
-    for (int i = 0; i < gridY; i++) {
-      for (int j = 0; j < gridX; j++) {
-        gridSquares[i][j].reset(GAME_BACKGROUND_COLOR);
+    for (GridSquare[] gridSquareArray : gridSquares) {
+      for (GridSquare gs : gridSquareArray) {
+        gs.reset(GAME_BACKGROUND_COLOR);
       }
     }
   }

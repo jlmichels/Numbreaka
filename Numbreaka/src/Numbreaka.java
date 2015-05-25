@@ -81,9 +81,9 @@ public class Numbreaka {
     int finalScore = 0;
     
     GridSquare[][] gridSquares = gameFrame.getGridSquares();
-    for (int i = 0; i < GRID_X; i++) {
-      for (int j = 0; j < GRID_Y; j++) {
-        finalScore = gridSquares[i][j].getValue() + finalScore;
+    for (GridSquare[] gridSquareArray : gridSquares) {
+      for (GridSquare gs : gridSquareArray) {
+        finalScore = gs.getValue() + finalScore;
       }
     }
     return finalScore;
@@ -141,7 +141,7 @@ public class Numbreaka {
   public void checkIfGameOver() {
     if (getGridSquaresFilled() == (NUMBER_OF_GRID_SQUARES)) {
       gameOver = true;
-      gameFrame.highlightNumbers();
+//      gameFrame.highlightNumbers();
       score = calculateScore();
       processScore(score, "JLM");
       gameFrame.displayFinalScorePopup(score, isHighScore);

@@ -16,13 +16,14 @@ class NumbreakaKeyListener implements KeyListener {
   @Override
   public void keyPressed(KeyEvent keyEvent) {
     if (keyEvent.getKeyChar() == 'q') {
-      // Closes game
-      System.exit(0); // 0 means exiting on purpose, 1 means exiting due to error
+      // Quits
+      System.exit(0);
     } else if (keyEvent.getKeyChar() == 'r') {
       // Resets game to initial conditions
       gameFrame.getGameTitle().setForeground(gameFrame.getHighlightColor());
       numbreaka.resetGame();
     } else if (keyEvent.getKeyChar() == 'h') {
+      // Resets high scores for testing
       numbreaka.resetHighScores();
     }
   }
@@ -31,12 +32,11 @@ class NumbreakaKeyListener implements KeyListener {
   public void keyReleased(KeyEvent keyEvent) {
     if (keyEvent.getKeyChar() == 'r') {
       gameFrame.getGameTitle().setForeground(Color.BLACK);
-      gameFrame.getGameTitle().setBorder(gameFrame.getLineBorder());
+//      gameFrame.getGameTitle().setBorder(gameFrame.getLineBorder()); Why was this here?
     }
   }
 
   @Override
   public void keyTyped(KeyEvent arg0) {
   }
-  
 }
