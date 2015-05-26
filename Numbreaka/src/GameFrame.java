@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.TreeMap;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -14,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
 
 
 public class GameFrame extends JFrame {
@@ -381,9 +378,6 @@ public class GameFrame extends JFrame {
     String secondInitials = "";
     String thirdInitials = "";
     
-    getHighScores();
-//    setHighScores();
-    
     if (firstScore <= 0) {
       firstHighScore.setText("1: AAA 000");
     } else {
@@ -403,36 +397,12 @@ public class GameFrame extends JFrame {
     this.repaint();
   }
   
-  private void getHighScores() {
-//    // Gets high scores and sets to temp values for readability
-//    TreeMap<Integer, String> tempHighScores = numbreaka.getHighScores();
-//    
-//    if (tempHighScores.lastEntry() != null) {
-//      firstInitials = tempHighScores.lastEntry().getValue();
-//      firstScore = tempHighScores.lastKey();
-//    }
-//    if (tempHighScores.lowerEntry(firstScore) != null) {
-//      secondInitials = tempHighScores.lowerEntry(firstScore).getValue();
-//      secondScore = tempHighScores.lowerKey(firstScore);
-//    }
-//    if (tempHighScores.lowerEntry(secondScore) != null) {
-//      thirdInitials = tempHighScores.lowerEntry(secondScore).getValue();
-//      thirdScore = tempHighScores.lowerKey(secondScore);
-//    }
-  }
-  
-//  private void setHighScores() {
-//    numbreaka.setHighScores(firstInitials, firstScore, secondInitials, secondScore, thirdInitials, thirdScore);
-//  }
-  
   public void displayFinalScorePopup(int score, boolean isHighScore) {
     finalScoreDisplay.setText(Integer.toString(score));
     if (isHighScore) {
       // clear this on reset
       newHighScore.setVisible(true);
     }
-    getHighScores();
-//    setHighScores();
     cardLayout.show(cardHolder, FINAL_SCORE_CARD);
     this.repaint();
   }

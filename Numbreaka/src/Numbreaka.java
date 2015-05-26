@@ -1,15 +1,11 @@
-import java.util.TreeMap;
-import java.util.prefs.Preferences;
-
   /*  
    * Known issues:
-   *   - TODO Change highscores from TreeMap to -> insert something here
+   *   - TODO Change highscores from TreeMap to -> insert something here (use preferences?)
    *   - TODO Holding 'r' keeps resetting High Scores title to gray instead of letting it stay highlighted like other menu items
    */
 
 public class Numbreaka {
   
-//  private static final TreeMap<Integer, String> HIGH_SCORES = new TreeMap<Integer, String>();
   private static GameFrame gameFrame;
   private static final GameOptions gameOptions = new GameOptions();
   private boolean gameOver = false;
@@ -17,8 +13,6 @@ public class Numbreaka {
   private int currentNumber = 1;
   private int gridSquaresFilled = 0;
   private int score = 0;
-//  private int currentHighScore = 0;
-//  private Preferences preferences;
 
   public static void main (String[] args) {    
     Numbreaka numbreaka = new Numbreaka();
@@ -27,7 +21,6 @@ public class Numbreaka {
   
   private void go() {
     formatFont();
-//    getPreferences();
     gameFrame = new GameFrame(this, gameOptions);
   }
   
@@ -36,34 +29,7 @@ public class Numbreaka {
     System.setProperty("awt.useSystemAAFontSettings","on");
     System.setProperty("swing.aatext", "true");
   }
-  
-//  private void getPreferences() {
-//    preferences = Preferences.userRoot().node(this.getClass().getName());
-//    
-//    // Reads highscores from preferences
-//    int firstScore = preferences.getInt("firstScore", -1);
-//    int secondScore = preferences.getInt("secondScore", -2);
-//    int thirdScore = preferences.getInt("thirdScore", -3);
-//    String firstInitials = preferences.get("firstInitials", "AAA");
-//    String secondInitials = preferences.get("secondInitials", "AAA");
-//    String thirdInitials = preferences.get("thirdInitials", "AAA");
-//    
-//    // Sets highscores from preferences
-//    HIGH_SCORES.put(firstScore, firstInitials);
-//    HIGH_SCORES.put(secondScore, secondInitials);
-//    HIGH_SCORES.put(thirdScore, thirdInitials);
-//  }
-  
-  // TODO Only set on game close or error?
-//  public void setPreferences(String firstInitials, int firstScore, String secondInitials, int secondScore, String thirdInitials, int thirdScore) {
-//      preferences.put("firstInitials", firstInitials);
-//      preferences.putInt("firstScore", firstScore);
-//      preferences.put("secondInitials", secondInitials);
-//      preferences.putInt("secondScore", secondScore);
-//      preferences.put("thirdInitials", thirdInitials);
-//      preferences.putInt("thirdScore", thirdScore);
-//  }
-  
+
   public void resetGame() {
     gameFrame.resetGame();
     gridSquaresFilled = 0;
@@ -74,8 +40,7 @@ public class Numbreaka {
   }  
 
   
-  // TODO Gridsquares should be created and handled in Numbreaka?
-  // Calculates final score by summing each grid square
+  // Sum each grid square
   private int calculateScore() {
     int finalScore = 0;
     
@@ -87,23 +52,6 @@ public class Numbreaka {
     }
     return finalScore;
   }
-
-  // Checks if score should be in top 3 and puts in if so
-  public void processScore(int score, String initials) {
-//    if (score >= HIGH_SCORES.firstKey()) {
-//      isHighScore = true;
-//      HIGH_SCORES.remove(HIGH_SCORES.firstKey());
-//    }
-//    HIGH_SCORES.put(score, initials);
-  }
-  
-//  public int getCurrentHighScore() {
-//    return currentHighScore;
-//  }
-  
-//  public TreeMap<Integer, String> getHighScores() {
-//    return HIGH_SCORES;
-//  }
   
   public boolean getGameOver() {
     return gameOver;
@@ -128,36 +76,17 @@ public class Numbreaka {
   public int getCurrentNumber() {
     return currentNumber;
   }
-  
-//  public void setHighScores(String firstInitials, int firstScore, String secondInitials, int secondScore, String thirdInitials, int thirdScore) {
-//    setPreferences(firstInitials, firstScore, secondInitials, secondScore, thirdInitials, thirdScore);
-//  }
-  
+   
   public void checkIfGameOver() {
     if (getGridSquaresFilled() == (gameOptions.getNumberOfGridSquares())) {
       gameOver = true;
-//      gameFrame.highlightNumbers();
       score = calculateScore();
-      processScore(score, "JLM");
       gameFrame.displayFinalScorePopup(score, isHighScore);
       isHighScore = false;
     }
   }
   
-//  public void resetHighScores() {
-//    String defaultInitials = "AAA";
-//    int defaultScore1 = -1;
-//    int defaultScore2 = -2;
-//    int defaultScore3 = -3;
-//    
-//    HIGH_SCORES.clear();
-//    HIGH_SCORES.put(defaultScore1, "AAA");
-//    HIGH_SCORES.put(defaultScore2, "AAA");
-//    HIGH_SCORES.put(defaultScore3, "AAA");
-////    this.setPreferences(defaultInitials, defaultScore1, defaultInitials, defaultScore2, defaultInitials, defaultScore3);
-//  }
-  
-  public void processGridSquare(GridSquare gs) {
+  public void processGridSquareInteraction(GridSquare gs) {
     breakSquare(gs);
     checkNeighbors(gs);
     incrementCurrentNumber();

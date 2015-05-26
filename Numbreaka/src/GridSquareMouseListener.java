@@ -15,7 +15,7 @@ public class GridSquareMouseListener implements MouseListener {
     if (!numbreaka.getGameOver()) {
       GridSquare gs = (GridSquare) e.getSource();
       if (!gs.isBroken()) {
-        numbreaka.processGridSquare(gs); 
+        numbreaka.processGridSquareInteraction(gs); 
       }
     }
   }
