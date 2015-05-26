@@ -9,11 +9,9 @@ import java.util.prefs.Preferences;
 
 public class Numbreaka {
   
-  private static final int GRID_X = 5;
-  private static final int GRID_Y = 5;
-  private static final int NUMBER_OF_GRID_SQUARES = GRID_X * GRID_Y;
 //  private static final TreeMap<Integer, String> HIGH_SCORES = new TreeMap<Integer, String>();
   private static GameFrame gameFrame;
+  private static final GameOptions gameOptions = new GameOptions();
   private boolean gameOver = false;
   private boolean isHighScore;
   private int currentNumber = 1;
@@ -26,11 +24,11 @@ public class Numbreaka {
     Numbreaka numbreaka = new Numbreaka();
     numbreaka.go();
   }
-
+  
   private void go() {
     formatFont();
 //    getPreferences();
-    gameFrame = new GameFrame(this, GRID_X, GRID_Y);
+    gameFrame = new GameFrame(this, gameOptions);
   }
   
   private void formatFont() {
@@ -67,7 +65,7 @@ public class Numbreaka {
 //  }
   
   public void resetGame() {
-    gameFrame.reset();
+    gameFrame.resetGame();
     gridSquaresFilled = 0;
     currentNumber = 1;
     gameFrame.getLeftTitleBox().setText(Integer.toString(currentNumber));
@@ -135,12 +133,8 @@ public class Numbreaka {
 //    setPreferences(firstInitials, firstScore, secondInitials, secondScore, thirdInitials, thirdScore);
 //  }
   
-  public int getNumberOfGridSquares() {
-    return NUMBER_OF_GRID_SQUARES;
-  }
-  
   public void checkIfGameOver() {
-    if (getGridSquaresFilled() == (NUMBER_OF_GRID_SQUARES)) {
+    if (getGridSquaresFilled() == (gameOptions.getNumberOfGridSquares())) {
       gameOver = true;
 //      gameFrame.highlightNumbers();
       score = calculateScore();
