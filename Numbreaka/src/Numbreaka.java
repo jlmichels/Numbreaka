@@ -28,7 +28,7 @@ public class Numbreaka {
 
   private void go() {
     formatFont();
-    getPreferences();
+//    getPreferences();
     gameFrame = new GameFrame(this, GRID_X, GRID_Y);
   }
   
@@ -38,32 +38,32 @@ public class Numbreaka {
     System.setProperty("swing.aatext", "true");
   }
   
-  private void getPreferences() {
-    preferences = Preferences.userRoot().node(this.getClass().getName());
-    
-    // Reads highscores from preferences
-    int firstScore = preferences.getInt("firstScore", -1);
-    int secondScore = preferences.getInt("secondScore", -2);
-    int thirdScore = preferences.getInt("thirdScore", -3);
-    String firstInitials = preferences.get("firstInitials", "AAA");
-    String secondInitials = preferences.get("secondInitials", "AAA");
-    String thirdInitials = preferences.get("thirdInitials", "AAA");
-    
-    // Sets highscores from preferences
-    HIGH_SCORES.put(firstScore, firstInitials);
-    HIGH_SCORES.put(secondScore, secondInitials);
-    HIGH_SCORES.put(thirdScore, thirdInitials);
-  }
+//  private void getPreferences() {
+//    preferences = Preferences.userRoot().node(this.getClass().getName());
+//    
+//    // Reads highscores from preferences
+//    int firstScore = preferences.getInt("firstScore", -1);
+//    int secondScore = preferences.getInt("secondScore", -2);
+//    int thirdScore = preferences.getInt("thirdScore", -3);
+//    String firstInitials = preferences.get("firstInitials", "AAA");
+//    String secondInitials = preferences.get("secondInitials", "AAA");
+//    String thirdInitials = preferences.get("thirdInitials", "AAA");
+//    
+//    // Sets highscores from preferences
+//    HIGH_SCORES.put(firstScore, firstInitials);
+//    HIGH_SCORES.put(secondScore, secondInitials);
+//    HIGH_SCORES.put(thirdScore, thirdInitials);
+//  }
   
   // Only set on game close or error?
-  public void setPreferences(String firstInitials, int firstScore, String secondInitials, int secondScore, String thirdInitials, int thirdScore) {
-      preferences.put("firstInitials", firstInitials);
-      preferences.putInt("firstScore", firstScore);
-      preferences.put("secondInitials", secondInitials);
-      preferences.putInt("secondScore", secondScore);
-      preferences.put("thirdInitials", thirdInitials);
-      preferences.putInt("thirdScore", thirdScore);
-  }
+//  public void setPreferences(String firstInitials, int firstScore, String secondInitials, int secondScore, String thirdInitials, int thirdScore) {
+//      preferences.put("firstInitials", firstInitials);
+//      preferences.putInt("firstScore", firstScore);
+//      preferences.put("secondInitials", secondInitials);
+//      preferences.putInt("secondScore", secondScore);
+//      preferences.put("thirdInitials", thirdInitials);
+//      preferences.putInt("thirdScore", thirdScore);
+//  }
   
   public void resetGame() {
     gameFrame.reset();
@@ -91,20 +91,20 @@ public class Numbreaka {
 
   // Checks if score should be in top 3 and puts in if so
   public void processScore(int score, String initials) {
-    if (score >= HIGH_SCORES.firstKey()) {
-      isHighScore = true;
-      HIGH_SCORES.remove(HIGH_SCORES.firstKey());
-    }
-    HIGH_SCORES.put(score, initials);
+//    if (score >= HIGH_SCORES.firstKey()) {
+//      isHighScore = true;
+//      HIGH_SCORES.remove(HIGH_SCORES.firstKey());
+//    }
+//    HIGH_SCORES.put(score, initials);
   }
   
-  public int getCurrentHighScore() {
-    return currentHighScore;
-  }
+//  public int getCurrentHighScore() {
+//    return currentHighScore;
+//  }
   
-  public TreeMap<Integer, String> getHighScores() {
-    return HIGH_SCORES;
-  }
+//  public TreeMap<Integer, String> getHighScores() {
+//    return HIGH_SCORES;
+//  }
   
   public boolean getGameOver() {
     return gameOver;
@@ -130,9 +130,9 @@ public class Numbreaka {
     return currentNumber;
   }
   
-  public void setHighScores(String firstInitials, int firstScore, String secondInitials, int secondScore, String thirdInitials, int thirdScore) {
-    setPreferences(firstInitials, firstScore, secondInitials, secondScore, thirdInitials, thirdScore);
-  }
+//  public void setHighScores(String firstInitials, int firstScore, String secondInitials, int secondScore, String thirdInitials, int thirdScore) {
+//    setPreferences(firstInitials, firstScore, secondInitials, secondScore, thirdInitials, thirdScore);
+//  }
   
   public int getNumberOfGridSquares() {
     return NUMBER_OF_GRID_SQUARES;
@@ -159,7 +159,7 @@ public class Numbreaka {
     HIGH_SCORES.put(defaultScore1, "AAA");
     HIGH_SCORES.put(defaultScore2, "AAA");
     HIGH_SCORES.put(defaultScore3, "AAA");
-    this.setPreferences(defaultInitials, defaultScore1, defaultInitials, defaultScore2, defaultInitials, defaultScore3);
+//    this.setPreferences(defaultInitials, defaultScore1, defaultInitials, defaultScore2, defaultInitials, defaultScore3);
   }
   
   public void processGridSquare(GridSquare gs) {

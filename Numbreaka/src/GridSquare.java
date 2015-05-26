@@ -71,22 +71,18 @@ public class GridSquare extends JLabel {
     }
   }
   
-  // Sets grid square above this grid square
   public void setGridSquareUp(GridSquare gridSquareUp) {
     this.gridSquareUp = gridSquareUp;
   }
 
-  // Sets grid square below this grid square
   public void setGridSquareDown(GridSquare gridSquareDown) {
     this.gridSquareDown = gridSquareDown;
   }
 
-  // Sets grid square to left of this grid square
   public void setGridSquareLeft(GridSquare gridSquareLeft) {
     this.gridSquareLeft = gridSquareLeft;
   }
 
-  // Sets grid square to right of this grid square
   public void setGridSquareRight(GridSquare gridSquareRight) {
     this.gridSquareRight = gridSquareRight;
   }

@@ -20,7 +20,8 @@ public class MenuObjectMouseListener implements MouseListener {
     JLabel menuObject = (JLabel) e.getSource();
     String menuText = menuObject.getText();
     
-    if (menuText.equals("START") || menuText.equals("QUIT") || menuText.equals("HIGH SCORES") || menuText.equals("RETRY") || menuText.equals("Return to Main Menu")) {
+    if (menuText.equals(Menu.START.toString()) || menuText.equals(Menu.QUIT.toString()) || menuText.equals(Menu.HIGH_SCORES.toString())
+        || menuText.equals(Menu.RETRY.toString()) || menuText.equals(Menu.RETURN_TO_MAIN_MENU.toString())) {
       gameFrame.highlight(menuObject);
     }
   }
@@ -30,15 +31,9 @@ public class MenuObjectMouseListener implements MouseListener {
     JLabel menuObject = (JLabel) e.getSource();
     String menuText = menuObject.getText();
     
-    if (menuText.equals("START")) {
+    if (menuText.equals(Menu.START.toString()) || menuText.equals(Menu.QUIT.toString()) || menuText.equals(Menu.HIGH_SCORES.toString())) {
       menuObject.setForeground(Color.DARK_GRAY);
-    } else if (menuText.equals("QUIT")) {
-      menuObject.setForeground(Color.DARK_GRAY);
-    } else if (menuText.equals("HIGH SCORES")) {
-      menuObject.setForeground(Color.DARK_GRAY);
-    } else if (menuText.equals("RETRY")) {
-      menuObject.setForeground(Color.BLACK);
-    } else if (menuText.equals("Return to Main Menu")) {
+    } else if (menuText.equals(Menu.RETRY.toString()) || menuText.equals(Menu.RETURN_TO_MAIN_MENU.toString())) {
       menuObject.setForeground(Color.BLACK);
     }
   }
@@ -48,21 +43,21 @@ public class MenuObjectMouseListener implements MouseListener {
     JLabel menuObject = (JLabel) e.getSource();
     String menuText = menuObject.getText();
     
-    if (menuText.equals("START")) {
+    if (menuText.equals(Menu.START.toString())) {
       gameFrame.displayGameWindow();
-    } else if (menuText.equals("QUIT")) {
+    } else if (menuText.equals(Menu.QUIT.toString())) {
       System.exit(0);
-    } else if (menuText.equals("HIGH SCORES")) {
+    } else if (menuText.equals(Menu.HIGH_SCORES.toString())) {
       gameFrame.displayHighScoresScreen();
-    } else if (menuText.equals("RETRY")) {
+    } else if (menuText.equals(Menu.RETRY.toString())) {
       gameFrame.highlight(menuObject);
       numbreaka.resetGame();
       gameFrame.displayGameWindow();
-    } else if (menuText.equals("NUMBREAKA")) {
+    } else if (menuText.equals(Menu.TITLE.toString())) {
       gameFrame.highlight(menuObject);
       numbreaka.resetGame();
       gameFrame.displayMainMenu();
-    } else if (menuText.equals("Return to Main Menu")) {
+    } else if (menuText.equals(Menu.RETURN_TO_MAIN_MENU.toString())) {
       gameFrame.displayMainMenu();
     }
   }
@@ -72,9 +67,9 @@ public class MenuObjectMouseListener implements MouseListener {
     JLabel menuObject = (JLabel) e.getSource();
     String menuText = menuObject.getText();
     
-    if (menuText.equals("RETRY")) {
+    if (menuText.equals(Menu.RETRY.toString())) {
       gameFrame.getGameTitle().setForeground(Color.BLACK);
-    } else if (menuText.equals("NUMBREAKA")) {
+    } else if (menuText.equals(Menu.TITLE.toString())) {
       gameFrame.getGameTitle().setForeground(Color.BLACK);
     }
   }

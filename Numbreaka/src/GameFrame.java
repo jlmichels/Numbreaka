@@ -25,6 +25,11 @@ public class GameFrame extends JFrame {
   private static final int GRID_SQUARE_WIDTH = 100;
   private static final int GRID_SQUARE_HEIGHT = 100;
   private static final long serialVersionUID = 1L; // necessary?
+  private static final String MAIN_MENU_CARD = "Main Menu";
+  private static final String GAME_WINDOW_CARD = "Game Window";
+  private static final String HIGH_SCORES_CARD = "High Scores";
+  private static final String FINAL_SCORE_CARD = "Final Score";
+  private static final String WINDOW_TITLE = "Numbreaka";
   private final int gridX;
   private final int gridY;
   private final MenuObjectMouseListener menuObjectMouseListener;
@@ -113,7 +118,7 @@ public class GameFrame extends JFrame {
     rightTitleBox.setOpaque(true);
     
     // Creates and designs main menu title
-    gameTitle = new JLabel("NUMBREAKA");
+    gameTitle = new JLabel(Menu.TITLE.toString());
     gameTitle.setBackground(GAME_BACKGROUND_COLOR);
     gameTitle.setForeground(Color.BLACK);
     gameTitle.setMaximumSize(new Dimension(300, 100));
@@ -149,7 +154,7 @@ public class GameFrame extends JFrame {
     mainMenu.setBorder(BLACK_LINE_BORDER);
     
     // Creates and designs START button
-    JLabel startButton = new JLabel("START");
+    JLabel startButton = new JLabel(Menu.START.toString());
     startButton.addMouseListener(menuObjectMouseListener);
     startButton.setHorizontalAlignment(SwingConstants.CENTER);
     startButton.setBackground(GAME_BACKGROUND_COLOR);
@@ -158,7 +163,7 @@ public class GameFrame extends JFrame {
     startButton.setFont(buttonFont);
    
     // Designs highScoresButton
-    highScoresButton = new JLabel("HIGH SCORES");
+    highScoresButton = new JLabel(Menu.HIGH_SCORES.toString());
     highScoresButton.addMouseListener(menuObjectMouseListener);
     highScoresButton.setHorizontalAlignment(SwingConstants.CENTER);
     highScoresButton.setBackground(GAME_BACKGROUND_COLOR);
@@ -167,7 +172,7 @@ public class GameFrame extends JFrame {
     highScoresButton.setFont(buttonFont);
     
     // Creates and designs QUIT button
-    JLabel quitButton = new JLabel("QUIT");
+    JLabel quitButton = new JLabel(Menu.QUIT.toString());
     quitButton.addMouseListener(menuObjectMouseListener);
     quitButton.setHorizontalAlignment(SwingConstants.CENTER);
     quitButton.setBackground(GAME_BACKGROUND_COLOR);
@@ -254,7 +259,7 @@ public class GameFrame extends JFrame {
     highScoresScreen.setBorder(BLACK_LINE_BORDER);
     
     // Creates and designs High Scores screen title
-    JLabel highScoresTitle = new JLabel("HIGH SCORES");
+    JLabel highScoresTitle = new JLabel(Menu.HIGH_SCORES.toString());
     highScoresTitle.setHorizontalAlignment(SwingConstants.CENTER);
     highScoresTitle.setBackground(GAME_BACKGROUND_COLOR);
     highScoresTitle.setForeground(Color.BLACK);
@@ -290,7 +295,7 @@ public class GameFrame extends JFrame {
     thirdHighScore.setFont(buttonFont);
     
     // Creates and designs return to main menu button
-    JLabel returnToMainMenu = new JLabel("Return to Main Menu");
+    JLabel returnToMainMenu = new JLabel(Menu.RETURN_TO_MAIN_MENU.toString());
     returnToMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
     returnToMainMenu.setBackground(GAME_BACKGROUND_COLOR);
     returnToMainMenu.setForeground(Color.BLACK);
@@ -348,7 +353,7 @@ public class GameFrame extends JFrame {
     finalScoreDisplay.setFont(buttonFont);
     
     // Creates and designs RETRY button
-    JLabel retry = new JLabel("RETRY");
+    JLabel retry = new JLabel(Menu.RETRY.toString());
     retry.setHorizontalAlignment(SwingConstants.CENTER);
     retry.setBackground(GAME_BACKGROUND_COLOR);
     retry.setForeground(Color.BLACK);
@@ -369,10 +374,10 @@ public class GameFrame extends JFrame {
   
   private void setupCardHolder() {
     cardHolder.setLayout(cardLayout);
-    cardHolder.add(mainMenu, "Main Menu");
-    cardHolder.add(gameWindow, "Game Window");
-    cardHolder.add(highScoresScreen, "High Scores");
-    cardHolder.add(finalScoreScreen, "Final Score");
+    cardHolder.add(mainMenu, MAIN_MENU_CARD);
+    cardHolder.add(gameWindow, GAME_WINDOW_CARD);
+    cardHolder.add(highScoresScreen, HIGH_SCORES_CARD);
+    cardHolder.add(finalScoreScreen, FINAL_SCORE_CARD);
     cardHolder.setVisible(true);
   }
   
@@ -383,7 +388,7 @@ public class GameFrame extends JFrame {
     this.getContentPane().add(titleBar);
     this.getContentPane().setBackground(GAME_BACKGROUND_COLOR);
     this.getContentPane().add(cardHolder);
-    this.setTitle("Numbreaka v0.1");
+    this.setTitle(WINDOW_TITLE);
 //    this.addMouseListener(menuObjectMouseListener);
     this.addKeyListener(new NumbreakaKeyListener(numbreaka, this));
     this.setBounds(400, 300, (gridX*GRID_SQUARE_WIDTH+8), (gridY*GRID_SQUARE_HEIGHT)+gridY+128);
@@ -415,12 +420,12 @@ public class GameFrame extends JFrame {
   }
   
   public void displayMainMenu() {
-    cardLayout.show(cardHolder, "Main Menu");
+    cardLayout.show(cardHolder, MAIN_MENU_CARD);
     this.repaint();
   }
   
   public void displayGameWindow() {
-    cardLayout.show(cardHolder, "Game Window");
+    cardLayout.show(cardHolder, GAME_WINDOW_CARD);
     this.repaint();
   }
 
@@ -431,7 +436,7 @@ public class GameFrame extends JFrame {
     }
     
     getHighScores();
-    setHighScores();
+//    setHighScores();
     
     if (firstScore <= 0) {
       firstHighScore.setText("1: AAA 000");
@@ -448,31 +453,31 @@ public class GameFrame extends JFrame {
     } else {
       thirdHighScore.setText("3: " + thirdInitials + " " + thirdScore);
     }
-    cardLayout.show(cardHolder, "High Scores");
+    cardLayout.show(cardHolder, HIGH_SCORES_CARD);
     this.repaint();
   }
   
   private void getHighScores() {
-    // Gets high scores and sets to temp values for readability
-    TreeMap<Integer, String> tempHighScores = numbreaka.getHighScores();
-    
-    if (tempHighScores.lastEntry() != null) {
-      firstInitials = tempHighScores.lastEntry().getValue();
-      firstScore = tempHighScores.lastKey();
-    }
-    if (tempHighScores.lowerEntry(firstScore) != null) {
-      secondInitials = tempHighScores.lowerEntry(firstScore).getValue();
-      secondScore = tempHighScores.lowerKey(firstScore);
-    }
-    if (tempHighScores.lowerEntry(secondScore) != null) {
-      thirdInitials = tempHighScores.lowerEntry(secondScore).getValue();
-      thirdScore = tempHighScores.lowerKey(secondScore);
-    }
+//    // Gets high scores and sets to temp values for readability
+//    TreeMap<Integer, String> tempHighScores = numbreaka.getHighScores();
+//    
+//    if (tempHighScores.lastEntry() != null) {
+//      firstInitials = tempHighScores.lastEntry().getValue();
+//      firstScore = tempHighScores.lastKey();
+//    }
+//    if (tempHighScores.lowerEntry(firstScore) != null) {
+//      secondInitials = tempHighScores.lowerEntry(firstScore).getValue();
+//      secondScore = tempHighScores.lowerKey(firstScore);
+//    }
+//    if (tempHighScores.lowerEntry(secondScore) != null) {
+//      thirdInitials = tempHighScores.lowerEntry(secondScore).getValue();
+//      thirdScore = tempHighScores.lowerKey(secondScore);
+//    }
   }
   
-  private void setHighScores() {
-    numbreaka.setHighScores(firstInitials, firstScore, secondInitials, secondScore, thirdInitials, thirdScore);
-  }
+//  private void setHighScores() {
+//    numbreaka.setHighScores(firstInitials, firstScore, secondInitials, secondScore, thirdInitials, thirdScore);
+//  }
   
   public void displayFinalScorePopup(int score, boolean isHighScore) {
     finalScoreDisplay.setText(Integer.toString(score));
@@ -481,8 +486,8 @@ public class GameFrame extends JFrame {
       newHighScore.setVisible(true);
     }
     getHighScores();
-    setHighScores();
-    cardLayout.show(cardHolder, "Final Score");
+//    setHighScores();
+    cardLayout.show(cardHolder, FINAL_SCORE_CARD);
     this.repaint();
   }
    
