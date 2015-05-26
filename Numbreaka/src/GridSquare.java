@@ -18,7 +18,7 @@ public class GridSquare extends JLabel {
     UP, DOWN, LEFT, RIGHT;
   }
   
-  // Call JLabel's constructor and set ID number (Todo: use to place powerups)
+  // Call JLabel's constructor and set ID number (TODO use to place powerups)
   GridSquare (int id) {
     super();
     gridSquareID = id;

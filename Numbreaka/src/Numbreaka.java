@@ -3,7 +3,8 @@ import java.util.prefs.Preferences;
 
   /*  
    * Known issues:
-   *   - Change highscores from TreeMap to -> insert something here
+   *   - TODO Change highscores from TreeMap to -> insert something here
+   *   - TODO Holding 'r' keeps resetting High Scores title to gray instead of letting it stay highlighted like other menu items
    */
 
 public class Numbreaka {
@@ -11,15 +12,15 @@ public class Numbreaka {
   private static final int GRID_X = 5;
   private static final int GRID_Y = 5;
   private static final int NUMBER_OF_GRID_SQUARES = GRID_X * GRID_Y;
-  private static final TreeMap<Integer, String> HIGH_SCORES = new TreeMap<Integer, String>();
+//  private static final TreeMap<Integer, String> HIGH_SCORES = new TreeMap<Integer, String>();
   private static GameFrame gameFrame;
   private boolean gameOver = false;
   private boolean isHighScore;
   private int currentNumber = 1;
   private int gridSquaresFilled = 0;
   private int score = 0;
-  private int currentHighScore = 0;
-  private Preferences preferences;
+//  private int currentHighScore = 0;
+//  private Preferences preferences;
 
   public static void main (String[] args) {    
     Numbreaka numbreaka = new Numbreaka();
@@ -55,7 +56,7 @@ public class Numbreaka {
 //    HIGH_SCORES.put(thirdScore, thirdInitials);
 //  }
   
-  // Only set on game close or error?
+  // TODO Only set on game close or error?
 //  public void setPreferences(String firstInitials, int firstScore, String secondInitials, int secondScore, String thirdInitials, int thirdScore) {
 //      preferences.put("firstInitials", firstInitials);
 //      preferences.putInt("firstScore", firstScore);
@@ -75,7 +76,7 @@ public class Numbreaka {
   }  
 
   
-  // Gridsquares should be created and handled in Numbreaka?
+  // TODO Gridsquares should be created and handled in Numbreaka?
   // Calculates final score by summing each grid square
   private int calculateScore() {
     int finalScore = 0;
@@ -83,7 +84,7 @@ public class Numbreaka {
     GridSquare[][] gridSquares = gameFrame.getGridSquares();
     for (GridSquare[] gridSquareArray : gridSquares) {
       for (GridSquare gs : gridSquareArray) {
-        finalScore = gs.getValue() + finalScore;
+        finalScore += gs.getValue();
       }
     }
     return finalScore;
@@ -149,18 +150,18 @@ public class Numbreaka {
     }
   }
   
-  public void resetHighScores() {
-    String defaultInitials = "AAA";
-    int defaultScore1 = -1;
-    int defaultScore2 = -2;
-    int defaultScore3 = -3;
-    
-    HIGH_SCORES.clear();
-    HIGH_SCORES.put(defaultScore1, "AAA");
-    HIGH_SCORES.put(defaultScore2, "AAA");
-    HIGH_SCORES.put(defaultScore3, "AAA");
-//    this.setPreferences(defaultInitials, defaultScore1, defaultInitials, defaultScore2, defaultInitials, defaultScore3);
-  }
+//  public void resetHighScores() {
+//    String defaultInitials = "AAA";
+//    int defaultScore1 = -1;
+//    int defaultScore2 = -2;
+//    int defaultScore3 = -3;
+//    
+//    HIGH_SCORES.clear();
+//    HIGH_SCORES.put(defaultScore1, "AAA");
+//    HIGH_SCORES.put(defaultScore2, "AAA");
+//    HIGH_SCORES.put(defaultScore3, "AAA");
+////    this.setPreferences(defaultInitials, defaultScore1, defaultInitials, defaultScore2, defaultInitials, defaultScore3);
+//  }
   
   public void processGridSquare(GridSquare gs) {
     breakSquare(gs);
@@ -185,12 +186,22 @@ public class Numbreaka {
       
       if (neighboringGridSquare != null && !neighboringGridSquare.isBroken()) {
         if (neighboringGridSquare.isEmpty()) {
-          neighboringGridSquare.setText(Integer.toString(currentNumber));
+          fillNeighboringGridSquare(neighboringGridSquare, currentNumber);
           incrementGridSquaresFilled();
         } else {
-          neighboringGridSquare.setText(Integer.toString(neighboringGridSquare.getValue() + currentNumber));
+          int value = calculateValue(neighboringGridSquare);
+          fillNeighboringGridSquare(neighboringGridSquare, value);
         }
       }
     }
+  }
+  
+  // TODO Do power-up calculations here?
+  private int calculateValue(GridSquare gs) {
+    return gs.getValue() + currentNumber;
+  }
+  
+  private void fillNeighboringGridSquare(GridSquare gs, int value) {
+    gs.setText(Integer.toString(value));
   }
 }

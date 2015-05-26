@@ -24,7 +24,7 @@ class NumbreakaKeyListener implements KeyListener {
       numbreaka.resetGame();
     } else if (keyEvent.getKeyChar() == 'h') {
       // Resets high scores for testing
-      numbreaka.resetHighScores();
+//      numbreaka.resetHighScores();
     }
   }
 
@@ -32,7 +32,6 @@ class NumbreakaKeyListener implements KeyListener {
   public void keyReleased(KeyEvent keyEvent) {
     if (keyEvent.getKeyChar() == 'r') {
       gameFrame.getGameTitle().setForeground(Color.BLACK);
-//      gameFrame.getGameTitle().setBorder(gameFrame.getLineBorder()); Why was this here?
     }
   }
 
