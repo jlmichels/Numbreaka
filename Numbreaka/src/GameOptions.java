@@ -12,15 +12,15 @@ public class GameOptions {
   private static final LineBorder BLACK_LINE_BORDER = new LineBorder(Color.BLACK);
   private static final int GRID_SQUARE_WIDTH = 100;
   private static final int GRID_SQUARE_HEIGHT = 100;
-  private static final String TITLE_AND_GRID_SQUARE_FONT_NAME = "Verdana"; // change these names
-  private static final String BUTTON_AND_LEFT_RIGHT_TITLE_BOXES_FONT_NAME = "Calibri";
+  private static final String PRIMARY_FONT_NAME = "Verdana"; // change these names
+  private static final String SECONDARY_FONT_NAME = "Calibri";
   
-  public String getTitleAndGridSquareFontName() {
-    return TITLE_AND_GRID_SQUARE_FONT_NAME;
+  public String getPrimaryFontName() {
+    return PRIMARY_FONT_NAME;
   }
   
-  public String getButtonAndLeftRightTitleBoxesFontName() {
-    return BUTTON_AND_LEFT_RIGHT_TITLE_BOXES_FONT_NAME;
+  public String getSecondaryFontName() {
+    return SECONDARY_FONT_NAME;
   }
   
   public int getGridX() {

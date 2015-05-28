@@ -19,7 +19,7 @@ class NumbreakaKeyListener implements KeyListener {
       System.exit(0);
     } else if (keyEvent.getKeyChar() == 'r') {
       // Resets game to initial conditions
-      gameFrame.toggleGameTitleHighlight();
+      gameFrame.highlightGameTitle();
       numbreaka.resetGame();
     } else if (keyEvent.getKeyChar() == 'h') {
       // Resets high scores for testing
@@ -30,7 +30,7 @@ class NumbreakaKeyListener implements KeyListener {
   @Override
   public void keyReleased(KeyEvent keyEvent) {
     if (keyEvent.getKeyChar() == 'r') {
-      gameFrame.toggleGameTitleHighlight();
+      gameFrame.returnColorToGameTitle();
     }
   }
 
