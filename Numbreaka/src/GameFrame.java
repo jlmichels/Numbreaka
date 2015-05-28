@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -15,15 +16,21 @@ import javax.swing.WindowConstants;
 
 
 public class GameFrame extends JFrame {
-  
+
   private static final long serialVersionUID = 1L; // necessary?
+  private static final String START_MENU_ITEM = "START";
+  private static final String QUIT_MENU_ITEM = "QUIT";
+  private static final String HIGH_SCORES_MENU_ITEM = "HIGH SCORES";
+  private static final String RETRY_MENU_ITEM = "RETRY";
+  private static final String RETURN_TO_MAIN_MENU_MENU_ITEM = "Return to Main Menu";
+  private static final String TITLE_TEXT= "NUMBREAKA";
   private static final String MAIN_MENU_CARD = "Main Menu";
   private static final String GAME_WINDOW_CARD = "Game Window";
   private static final String HIGH_SCORES_CARD = "High Scores";
   private static final String FINAL_SCORE_CARD = "Final Score";
   private static final String WINDOW_TITLE = "Numbreaka";
   private final GameOptions gameOptions;
-  private final MenuObjectMouseListener menuObjectMouseListener;
+  private final GameTextMouseListener menuObjectMouseListener;
   private final GridSquareMouseListener gridSquareMouseListener;
   private boolean isHighScoresScreenInitialized = false;
   private final CardLayout cardLayout = new CardLayout();
@@ -49,7 +56,7 @@ public class GameFrame extends JFrame {
   public GameFrame(Numbreaka numbreaka, GameOptions gameOptions) {
     this.numbreaka = numbreaka;
     this.gameOptions = gameOptions;
-    menuObjectMouseListener = new MenuObjectMouseListener(numbreaka, this);
+    menuObjectMouseListener = new GameTextMouseListener(this);
     gridSquareMouseListener = new GridSquareMouseListener(numbreaka);
     Font buttonFont = new Font(gameOptions.getButtonAndLeftRightTitleBoxesFontName(), Font.BOLD, 55);
     JPanel titleBar = setupTitleBar();
@@ -76,7 +83,7 @@ public class GameFrame extends JFrame {
     powerupTitleBox.setFont(new Font(gameOptions.getButtonAndLeftRightTitleBoxesFontName(), Font.BOLD, 43));
     
     // Creates and designs top game title
-    gameTitle = new JLabel(Menu.TITLE.toString());
+    gameTitle = new JLabel(TITLE_TEXT);
     gameTitle.setBackground(gameOptions.getGameBackgroundColor());
     gameTitle.setForeground(Color.BLACK);
     gameTitle.setMaximumSize(new Dimension(300, 100));
@@ -124,9 +131,9 @@ public class GameFrame extends JFrame {
     mainMenu.setBackground(gameOptions.getGameBackgroundColor());
     mainMenu.setBorder(gameOptions.getBlackLineBorder());
     
-    JLabel startButton = getMainMenuButton(Menu.START.toString(), buttonFont);
-    highScoresButton = getMainMenuButton(Menu.HIGH_SCORES.toString(), buttonFont);
-    JLabel quitButton = getMainMenuButton(Menu.QUIT.toString(), buttonFont);
+    JLabel startButton = getMainMenuButton(START_MENU_ITEM, buttonFont);
+    highScoresButton = getMainMenuButton(HIGH_SCORES_MENU_ITEM, buttonFont);
+    JLabel quitButton = getMainMenuButton(QUIT_MENU_ITEM, buttonFont);
     
     // Adds components to main menu
     mainMenu.add(Box.createRigidArea(new Dimension(0,130)));
@@ -214,7 +221,7 @@ public class GameFrame extends JFrame {
     highScoresScreen.setBorder(gameOptions.getBlackLineBorder());
     
     // Creates and designs High Scores screen title
-    JLabel highScoresTitle = new JLabel(Menu.HIGH_SCORES.toString());
+    JLabel highScoresTitle = new JLabel(HIGH_SCORES_MENU_ITEM);
     highScoresTitle.setHorizontalAlignment(SwingConstants.CENTER);
     highScoresTitle.setBackground(gameOptions.getGameBackgroundColor());
     highScoresTitle.setForeground(Color.BLACK);
@@ -225,7 +232,7 @@ public class GameFrame extends JFrame {
     firstHighScore = makeHighScoreLabel("", buttonFont);
     secondHighScore = makeHighScoreLabel("", buttonFont);
     thirdHighScore = makeHighScoreLabel("", buttonFont);
-    JLabel returnToMainMenu = makeReturnToMainMenuButton(Menu.RETURN_TO_MAIN_MENU.toString());
+    JLabel returnToMainMenu = makeReturnToMainMenuButton(RETURN_TO_MAIN_MENU_MENU_ITEM);
     
     // Adds components to high scores screen
     highScoresScreen.add(Box.createRigidArea(new Dimension(0,40)));
@@ -300,7 +307,7 @@ public class GameFrame extends JFrame {
     finalScoreDisplay.setFont(buttonFont);
     
     // Creates and designs RETRY button
-    JLabel retry = new JLabel(Menu.RETRY.toString());
+    JLabel retry = new JLabel(RETRY_MENU_ITEM);
     retry.setHorizontalAlignment(SwingConstants.CENTER);
     retry.setBackground(gameOptions.getGameBackgroundColor());
     retry.setForeground(Color.BLACK);
@@ -427,8 +434,46 @@ public class GameFrame extends JFrame {
     getLeftTitleBox().setText(Integer.toString(numbreaka.getCurrentNumber()));
   }
   
-  public void highlight(JLabel jLabel) {
-    jLabel.setForeground(gameOptions.getHighlightColor());
+  public void highlightAsNecessary(JLabel gameTextLabel) {
+    String gameText = gameTextLabel.getText();
+    if (gameText.equals(START_MENU_ITEM) || gameText.equals(QUIT_MENU_ITEM) || gameText.equals(HIGH_SCORES_MENU_ITEM)
+        || gameText.equals(RETRY_MENU_ITEM) || gameText.equals(RETURN_TO_MAIN_MENU_MENU_ITEM)) {
+        highlight(gameTextLabel);
+    }
+  }
+  
+  public void highlight(JLabel gameTextLabel) {
+    gameTextLabel.setForeground(gameOptions.getHighlightColor());
+  }
+  
+  public void returnColorAsNecessary(JLabel gameTextLabel) {
+    String gameText = gameTextLabel.getText();
+    if (gameText.equals(START_MENU_ITEM) || gameText.equals(QUIT_MENU_ITEM) || gameText.equals(HIGH_SCORES_MENU_ITEM)) {
+      gameTextLabel.setForeground(Color.DARK_GRAY);
+    } else if (gameText.equals(RETRY_MENU_ITEM) || gameText.equals(RETURN_TO_MAIN_MENU_MENU_ITEM) || gameText.equals(TITLE_TEXT)) {
+      gameTextLabel.setForeground(Color.BLACK);
+    }
+  }
+  
+  public void performActionAsNecessary(JLabel gameTextLabel) {
+    String gameText = gameTextLabel.getText();
+    if (gameText.equals(START_MENU_ITEM)) {
+      displayGameWindow();
+    } else if (gameText.equals(QUIT_MENU_ITEM)) {
+      System.exit(0);
+    } else if (gameText.equals(HIGH_SCORES_MENU_ITEM)) {
+      displayHighScoresScreen();
+    } else if (gameText.equals(RETRY_MENU_ITEM)) {
+      highlight(gameTextLabel);
+      numbreaka.resetGame();
+      displayGameWindow();
+    } else if (gameText.equals(TITLE_TEXT)) {
+      highlight(gameTextLabel);
+      numbreaka.resetGame();
+      displayMainMenu();
+    } else if (gameText.equals(RETURN_TO_MAIN_MENU_MENU_ITEM)) {
+      displayMainMenu();
+    }
   }
   
   public void toggleGameTitleHighlight() {
