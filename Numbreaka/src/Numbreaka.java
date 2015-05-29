@@ -1,18 +1,24 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
   /*  
    * Known issues:
-   *   - TODO Change highscores from TreeMap to -> insert something here (use preferences?)
+   * 
    */
 
 public class Numbreaka {
   
   private static GameFrame gameFrame;
   private static final GameOptions gameOptions = new GameOptions();
-  private List<HighScore> highScores;
+  private ArrayList<HighScore> highScores;
   private boolean gameOver = false;
   private int currentNumber = 1;
   private int gridSquaresFilled = 0;
@@ -35,8 +41,52 @@ public class Numbreaka {
     System.setProperty("swing.aatext", "true");
   }
   
-  private List<HighScore> loadHighScores() {
-    return new ArrayList<HighScore>();
+  @SuppressWarnings("unchecked")
+  private ArrayList<HighScore> loadHighScores() {
+    ArrayList<HighScore> highScores = null;
+    try
+    {
+       FileInputStream fileIn = new FileInputStream("highScores.ser");
+       ObjectInputStream in = new ObjectInputStream(fileIn);
+       highScores = (ArrayList<HighScore>) in.readObject();
+       in.close();
+       fileIn.close();
+    } catch(FileNotFoundException fnfe) {
+      // No previous high scores; create new List
+      return new ArrayList<HighScore>();
+    } catch(IOException e) {
+       e.printStackTrace();
+       System.exit(0);
+    } catch(ClassNotFoundException c) {
+      c.printStackTrace();
+      System.exit(0);
+    } 
+    return highScores;
+  }
+  
+  private void saveHighScores() {
+    try {
+     FileOutputStream fileOut = new FileOutputStream("highScores.ser");
+     ObjectOutputStream out = new ObjectOutputStream(fileOut);
+     out.writeObject(highScores);
+     out.close();
+     fileOut.close();
+    } catch(IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  public void resetHighScores() {
+    highScores = new ArrayList<HighScore>();
+  }
+
+  public String getHighScore(int number) {
+    int index = number - 1;
+    if (highScores.size() >= number) {
+      return highScores.get(index).toString();
+    } else {
+      return "";
+    }
   }
 
   public void resetGame() {
@@ -126,7 +176,7 @@ public class Numbreaka {
       highScores.add(index, newHighScore);
       if (highScores.size() > 3) {
         // Trim to 3
-        highScores = highScores.subList(0, 3);
+        highScores = (ArrayList<HighScore>) highScores.subList(0, 3);
       }
     }
   }
@@ -185,15 +235,6 @@ public class Numbreaka {
     }
   }
   
-  public String getHighScore(int number) {
-    int index = number - 1;
-    if (highScores.size() >= number) {
-      return highScores.get(index).toString();
-    } else {
-      return "";
-    }
-  }
-  
   // TODO Do power-up calculations here?
   private int calculateValue(GridSquare gs) {
     return gs.getValue() + currentNumber;
@@ -203,7 +244,13 @@ public class Numbreaka {
     gs.setText(Integer.toString(value));
   }
   
-  private class HighScore {
+  public void quit() {
+    saveHighScores();
+    System.exit(0);
+  }
+  
+  private static class HighScore implements Serializable {
+    private static final long serialVersionUID = -5794159217693346419L;
     private final static String DEFAULT_INITIALS = "AAA";
     private final String initials;
     private final int score;

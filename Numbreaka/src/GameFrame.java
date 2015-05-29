@@ -29,6 +29,9 @@ public class GameFrame extends JFrame {
   private static final String HIGH_SCORES_CARD = "High Scores";
   private static final String FINAL_SCORE_CARD = "Final Score";
   private static final String WINDOW_TITLE = "Numbreaka";
+  private static final String DEFAULT_FIRST_HIGH_SCORE = "1: AAA 000";
+  private static final String DEFAULT_SECOND_HIGH_SCORE = "2: AAA 000";
+  private static final String DEFAULT_THIRD_HIGH_SCORE = "3: AAA 000";
   private final GameOptions gameOptions;
   private final GameTextMouseListener menuObjectMouseListener;
   private final GridSquareMouseListener gridSquareMouseListener;
@@ -226,9 +229,9 @@ public class GameFrame extends JFrame {
     highScoresTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
     highScoresTitle.setFont(titleFont);
      
-    firstHighScore = makeHighScoreLabel("1: AAA 000", buttonFont);
-    secondHighScore = makeHighScoreLabel("2: AAA 000", buttonFont);
-    thirdHighScore = makeHighScoreLabel("3: AAA 000", buttonFont);
+    firstHighScore = makeHighScoreLabel(DEFAULT_FIRST_HIGH_SCORE, buttonFont);
+    secondHighScore = makeHighScoreLabel(DEFAULT_SECOND_HIGH_SCORE, buttonFont);
+    thirdHighScore = makeHighScoreLabel(DEFAULT_THIRD_HIGH_SCORE, buttonFont);
     JLabel returnToMainMenu = makeReturnToMainMenuButton(RETURN_TO_MAIN_MENU_MENU_ITEM);
     
     // Adds components to high scores screen
@@ -380,14 +383,21 @@ public class GameFrame extends JFrame {
     String first = numbreaka.getHighScore(1);
     String second = numbreaka.getHighScore(2);
     String third = numbreaka.getHighScore(3);
+    System.out.println(first + second + third);
     if (!first.equals("")) {
       firstHighScore.setText("1: " + numbreaka.getHighScore(1));  
+    } else {
+      firstHighScore.setText(DEFAULT_FIRST_HIGH_SCORE);
     }
     if (!second.equals("")) {
       secondHighScore.setText("2: " + numbreaka.getHighScore(2));  
+    } else {
+      secondHighScore.setText(DEFAULT_SECOND_HIGH_SCORE);
     }
     if (!third.equals("")) {
       thirdHighScore.setText("3: " + numbreaka.getHighScore(3));  
+    } else {
+      thirdHighScore.setText(DEFAULT_THIRD_HIGH_SCORE);
     }
     cardLayout.show(cardHolder, HIGH_SCORES_CARD);
     this.repaint();
@@ -449,7 +459,7 @@ public class GameFrame extends JFrame {
     if (gameText.equals(START_MENU_ITEM)) {
       displayGameWindow();
     } else if (gameText.equals(QUIT_MENU_ITEM)) {
-      System.exit(0);
+      numbreaka.quit();
     } else if (gameText.equals(HIGH_SCORES_MENU_ITEM)) {
       displayHighScoresScreen();
     } else if (gameText.equals(RETRY_MENU_ITEM)) {

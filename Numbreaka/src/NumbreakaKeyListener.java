@@ -15,15 +15,14 @@ class NumbreakaKeyListener implements KeyListener {
   @Override
   public void keyPressed(KeyEvent keyEvent) {
     if (keyEvent.getKeyChar() == 'q') {
-      // Quits
-      System.exit(0);
+      numbreaka.quit();
     } else if (keyEvent.getKeyChar() == 'r') {
       // Resets game to initial conditions
       gameFrame.highlightGameTitle();
       numbreaka.resetGame();
     } else if (keyEvent.getKeyChar() == 'h') {
       // Resets high scores for testing
-//      numbreaka.resetHighScores();
+      numbreaka.resetHighScores();
     }
   }
 
