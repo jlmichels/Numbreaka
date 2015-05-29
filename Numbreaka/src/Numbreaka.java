@@ -264,10 +264,6 @@ public class Numbreaka {
       this.score = score;
     }
     
-    public String getInitials() {
-      return initials;
-    }
-    
     public int getScore() {
       return score;
     }
