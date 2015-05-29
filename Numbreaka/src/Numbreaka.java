@@ -132,58 +132,15 @@ public class Numbreaka {
   }
   
   private int determineInsertionIndex(int newScore) {
-    int size = highScores.size();
-    switch (size) {
-      case 3: return determineIndexOfThree(newScore);
-      case 2: return determineIndexOfTwo(newScore);
-      case 1: return determineIndexOfOne(newScore);
-      case 0: return 0;
-      default: System.out.println("Invalid high score size.");
-               System.exit(0);
-               return -1; // Unreachable?
-    }
-  }
-  
-  private int determineIndexOfThree(int newScore) {
-    int firstScore = highScores.get(0).getScore();
-    int secondScore = highScores.get(1).getScore();
-    int thirdScore = highScores.get(2).getScore();
-    if (newScore > firstScore) {
-      return 0;
-    } else {
-      if (newScore > secondScore) {
-        return 1;
+    int insertionIndex = 0;
+    for (int i = 0; i < highScores.size(); i++) {
+      if (newScore < highScores.get(i).getScore()) {
+        insertionIndex++;
       } else {
-        if (newScore > thirdScore) {
-          return 2;
-        } else {
-          return 3;
-        }
+        break;
       }
     }
-  }
-  
-  private int determineIndexOfTwo(int newScore) {
-    int firstScore = highScores.get(0).getScore();
-    int secondScore = highScores.get(1).getScore();
-    if (newScore > firstScore) {
-      return 0;
-    } else {
-      if (newScore > secondScore) {
-        return 1;
-      } else {
-        return 2;
-      }
-    }
-  }
-  
-  private int determineIndexOfOne(int newScore) {
-    int onlyScore = highScores.get(0).getScore();
-    if (newScore > onlyScore) {
-      return 0;
-    } else {
-      return 1;
-    }
+    return insertionIndex;
   }
   
   public void processGridSquareInteraction(GridSquare gs) {
@@ -220,7 +177,7 @@ public class Numbreaka {
   }
   
   private boolean checkIfNewHighScore(int possibleHighScore) {
-    if (highScores.size() == 0) {
+    if (highScores.size() < 3) {
       return true;
     } else {
       int lastIndex = highScores.size() - 1;
