@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -58,6 +60,11 @@ public class GameFrame extends JFrame {
     this.gameOptions = gameOptions;
     menuObjectMouseListener = new GameTextMouseListener(this);
     gridSquareMouseListener = new GridSquareMouseListener(numbreaka);
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        numbreaka.quit();
+      }
+    });
     Font buttonFont = new Font(gameOptions.getSecondaryFontName(), Font.BOLD, 55);
     JPanel titleBar = setupTitleBar();
     JPanel mainMenu = setupMainMenu(buttonFont);
@@ -383,7 +390,6 @@ public class GameFrame extends JFrame {
     String first = numbreaka.getHighScore(1);
     String second = numbreaka.getHighScore(2);
     String third = numbreaka.getHighScore(3);
-    System.out.println(first + second + third);
     if (!first.equals("")) {
       firstHighScore.setText("1: " + numbreaka.getHighScore(1));  
     } else {
