@@ -9,6 +9,7 @@ public class GridSquare extends JLabel {
   private static final long serialVersionUID = 1L;
   private final int gridSquareID;
   private boolean isBroken = false;
+  private final Color backgroundColor;
   private GridSquare gridSquareUp;
   private GridSquare gridSquareDown;
   private GridSquare gridSquareLeft;
@@ -18,9 +19,9 @@ public class GridSquare extends JLabel {
     UP, DOWN, LEFT, RIGHT;
   }
   
-  // Call JLabel's constructor and set ID number (TODO use to place powerups)
-  GridSquare (int id) {
+  GridSquare (int id, Color backgroundColor) {
     super();
+    this.backgroundColor = backgroundColor;
     gridSquareID = id;
   }
   
@@ -29,11 +30,16 @@ public class GridSquare extends JLabel {
     setBackground(Color.BLACK);
   }
   
+  public void repairSquare() {
+    isBroken = false;
+    setBackground(backgroundColor);
+  }
+  
   // Resets grid square to initial conditions
-  public void reset(Color gameBackgroundColor) {
+  public void reset() {
     isBroken = false;
     setText("");
-    setBackground(gameBackgroundColor);
+    setBackground(backgroundColor);
     setForeground(Color.BLACK);
   }
   
@@ -46,6 +52,14 @@ public class GridSquare extends JLabel {
       return 0;
     } else {
       return Integer.parseInt(getText());
+    }
+  }
+  
+  public void setValue(int value) {
+    if (value == 0) {
+      setText("");
+    } else {
+      setText(Integer.toString(value)); 
     }
   }
   

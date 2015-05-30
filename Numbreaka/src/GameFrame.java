@@ -86,7 +86,7 @@ public class GameFrame extends JFrame {
     currentNumberTitleBox.setFont(gridSquareFont);
 
     // Creates right box to hold powerups
-    powerupTitleBox = getTitleBox("POW");
+    powerupTitleBox = getTitleBox("");
     powerupTitleBox.setFont(new Font(gameOptions.getSecondaryFontName(), Font.BOLD, 43));
     
     // Creates and designs top game title
@@ -184,7 +184,7 @@ public class GameFrame extends JFrame {
     // Creates gridSquares and fills grid, assigning id numbers
     for (int i = 0; i < gameOptions.getGridY(); i++) {
       for (int j = 0; j < gameOptions.getGridX(); j++) {
-        gridSquares[i][j] = new GridSquare(id);
+        gridSquares[i][j] = new GridSquare(id, gameOptions.getGameBackgroundColor());
         gridSquares[i][j].setBorder(gameOptions.getBlackLineBorder());
         gridSquares[i][j].addMouseListener(gridSquareMouseListener);
         gridSquares[i][j].setOpaque(true);
@@ -364,9 +364,10 @@ public class GameFrame extends JFrame {
   
   public void resetGame() {
     newHighScore.setVisible(false);
+    powerupTitleBox.setText("");
     for (GridSquare[] gridSquareArray : gridSquares) {
       for (GridSquare gs : gridSquareArray) {
-        gs.reset(gameOptions.getGameBackgroundColor());
+        gs.reset();
       }
     }
   }
@@ -436,7 +437,30 @@ public class GameFrame extends JFrame {
   }
   
   public void updateHelper() {
-    getLeftTitleBox().setText(Integer.toString(numbreaka.getCurrentNumber()));
+//    getLeftTitleBox().setText(Integer.toString(numbreaka.getCurrentNumber()));
+    currentNumberTitleBox.setText(Integer.toString(numbreaka.getCurrentNumber()));
+  }
+  
+  public void updatePowerup(Numbreaka.Powerup powerup) {
+    switch (powerup) {
+      case NOTHING:       powerupTitleBox.setText("");
+                          break;
+      case MULTIPLY:      powerupTitleBox.setText("x2");
+                          break;
+      case VERTICAL:      powerupTitleBox.setText("U-D");
+                          break;
+      case HORIZONTAL:    powerupTitleBox.setText("L-R");
+                          break;
+      case RIGHT_ROTATION:powerupTitleBox.setText("->");
+                          break;
+      case LEFT_ROTATION: powerupTitleBox.setText("<-");
+                          break;
+      case REVERSE:       powerupTitleBox.setText("REV");
+                          break;
+      case CONSOLIDATE:   powerupTitleBox.setText("CON");
+                          break;
+      default:            throw new IllegalArgumentException();
+    }
   }
   
   public void highlightAsNecessary(JLabel gameTextLabel) {

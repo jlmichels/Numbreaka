@@ -14,15 +14,34 @@ class NumbreakaKeyListener implements KeyListener {
   // Responds to keyboard input
   @Override
   public void keyPressed(KeyEvent keyEvent) {
-    if (keyEvent.getKeyChar() == 'q') {
-      numbreaka.quit();
-    } else if (keyEvent.getKeyChar() == 'r') {
-      // Resets game to initial conditions
-      gameFrame.highlightGameTitle();
-      numbreaka.resetGame();
-    } else if (keyEvent.getKeyChar() == 'h') {
-      // Resets high scores for testing
-      numbreaka.resetHighScores();
+    char key = keyEvent.getKeyChar();
+    
+    switch (key) {
+      case '1': numbreaka.grantPowerup(1);
+                break;
+      case '2': numbreaka.grantPowerup(2);
+                break;
+      case '3': numbreaka.grantPowerup(3);
+                break;
+      case '4': numbreaka.grantPowerup(4);
+                break;
+      case '5': numbreaka.grantPowerup(5);
+                break;
+      case '6': numbreaka.grantPowerup(6);
+                break;
+      case '7': numbreaka.grantPowerup(7);
+                break;
+      case '8': numbreaka.incrementCurrentNumber();
+                gameFrame.updateHelper();
+                break;
+      case 'q': numbreaka.quit();
+                break;
+      case 'r': gameFrame.highlightGameTitle();
+                numbreaka.resetGame();
+                break;
+      case 'h': numbreaka.resetHighScores();
+                break;
+      default: ;
     }
   }
 
