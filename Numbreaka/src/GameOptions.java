@@ -5,8 +5,8 @@ import javax.swing.border.LineBorder;
 
 // TODO Make available in options menu or similar
 public class GameOptions {
-  private static final int GRID_X = 7;
-  private static final int GRID_Y = 7;
+  private static final int GRID_X = 6;
+  private static final int GRID_Y = 6;
   private static final int NUMBER_OF_GRID_SQUARES = GRID_X * GRID_Y;
   private static final Color HIGHLIGHT_COLOR = new Color(134, 39, 39);
   private static final Color GAME_BACKGROUND_COLOR = new Color(202, 221, 221);

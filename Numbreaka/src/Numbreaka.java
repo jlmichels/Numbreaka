@@ -28,6 +28,7 @@ public class Numbreaka {
   private Powerup currentPowerup = Powerup.NOTHING;
   private int gridSquaresFilled = 0;
   private int score = 0;
+  private static final int NUMBER_OF_POWERUPS = (int) Math.sqrt(gameOptions.getNumberOfGridSquares());
   
   public static void main (String[] args) {
     Numbreaka numbreaka = new Numbreaka();
@@ -75,7 +76,7 @@ public class Numbreaka {
       powerupLocations.clear();
     }
     
-    while (powerupLocations.size() < 5) {
+    while (powerupLocations.size() < NUMBER_OF_POWERUPS) {
       int newRandomLocation = random.nextInt(gameOptions.getNumberOfGridSquares());
       if (!powerupLocations.containsKey(newRandomLocation)) {
         powerupLocations.put(newRandomLocation, randomPowerup());

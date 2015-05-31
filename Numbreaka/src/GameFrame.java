@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -359,7 +360,12 @@ public class GameFrame extends JFrame {
     this.addKeyListener(new NumbreakaKeyListener(numbreaka, this));
     int width = gameOptions.getGridX()*gameOptions.getGridSquareWidth()+8;
     int height = gameOptions.getGridY()*gameOptions.getGridSquareHeight()+gameOptions.getGridY()+128;
-    this.setBounds(400, 300, width, height);
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int monitorWidth = (int) screenSize.getWidth();
+    int monitorHeight = (int) screenSize.getHeight();
+    int startX = (monitorWidth - width)/2;
+    int startY = (monitorHeight - height)/2;
+    this.setBounds(startX, startY, width, height);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.setAlwaysOnTop(true);
     this.setResizable(false);
