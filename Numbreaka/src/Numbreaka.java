@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 
   /*  
    * Known issues:
-   * gridSquaresFilled not updated correctly
    * 
    */
 
@@ -117,16 +116,14 @@ public class Numbreaka {
   }
 
   public void resetGame() {
-    gameFrame.resetGame();
     gridSquaresFilled = 0;
     currentNumber = 1;
+    currentPowerup = Powerup.NOTHING;
     generatePowerupLocations();
-    gameFrame.getLeftTitleBox().setText(Integer.toString(currentNumber));
-    gameFrame.displayMainMenu();
+    gameFrame.resetGame();
     gameOver = false;
   }  
 
-  
   // Sum each grid square
   private int calculateScore() {
     int finalScore = 0;
@@ -234,13 +231,17 @@ public class Numbreaka {
   }
   
   public void processGridSquareInteraction(GridSquare gs) {
-    if (currentPowerup != Powerup.CONSOLIDATE && currentPowerup != Powerup.RIGHT_ROTATION && currentPowerup != Powerup.LEFT_ROTATION) {
-      gs.breakSquare();
+    if (!gs.isBroken() || currentPowerup == Powerup.RESURRECT) {
+      if (currentPowerup != Powerup.CONSOLIDATE && currentPowerup != Powerup.RIGHT_ROTATION && currentPowerup != Powerup.LEFT_ROTATION && currentPowerup != Powerup.RESURRECT) {
+        gs.breakSquare();
+      }
+      processNeighbors(gs);
+      incrementCurrentNumber();
+      gameFrame.updateHelper();
+      checkIfGameOver();  
+    } else {
+      // Square is broken and currentPowerup is not RESURRECT; do nothing
     }
-    processNeighbors(gs);
-    incrementCurrentNumber();
-    gameFrame.updateHelper();
-    checkIfGameOver();
   }
   
   private void processNeighbors(GridSquare currentGridSquare) {
@@ -252,7 +253,6 @@ public class Numbreaka {
     }
     currentPowerup = getNewPowerup(currentGridSquare);
     gameFrame.updatePowerup(currentPowerup);
-    System.out.println(currentPowerup.name());
   }
   
   private Powerup getNewPowerup(GridSquare currentGridSquare) {
@@ -281,6 +281,8 @@ public class Numbreaka {
       case REVERSE:       reverseNeighbors(currentGridSquare);
                           break;
       case CONSOLIDATE:   consolidateNeighbors(currentGridSquare);
+                          break;
+      case RESURRECT:     resurrect(currentGridSquare);
                           break;
       default:            throw new IllegalArgumentException();
     }
@@ -352,10 +354,12 @@ public class Numbreaka {
     int rightValue = getValueForRotation(right);
     boolean rightBroken = getBrokenForRotation(right);
     
+    // TODO check pre-swap status, subtract any from gridsquaresfilled
     totalSwap(up, leftValue, leftBroken);
     totalSwap(right, upValue, upBroken);
     totalSwap(down, rightValue, rightBroken);
     totalSwap(left, downValue, downBroken);
+    // TODO check post-swap status, add any to gridsquaresfilled
   }
   
   private void totalSwap(GridSquare gs, int val, boolean swapIsBroken) {
@@ -484,6 +488,9 @@ public class Numbreaka {
       case 7: currentPowerup = Powerup.CONSOLIDATE;
               gameFrame.updatePowerup(currentPowerup);
               break;
+      case 8: currentPowerup = Powerup.RESURRECT;
+              gameFrame.updatePowerup(currentPowerup);
+              break;
       default: throw new IllegalArgumentException();
     }
   }
@@ -500,6 +507,12 @@ public class Numbreaka {
     currentGridSquare.setValue(total);
   }
   
+  private void resurrect(GridSquare currentGridSquare) {
+    if (currentGridSquare.isBroken()) {
+      currentGridSquare.repairSquare();
+    }
+  }
+  
   private boolean checkIfNewHighScore(int possibleHighScore) {
     if (highScores.size() < 3) {
       return true;
@@ -509,13 +522,9 @@ public class Numbreaka {
     }
   }
   
-  private void fillNeighboringGridSquare(GridSquare gs, int value) {
-    if (gs != null) {
-      if (value == 0) {
-        gs.clear();
-      } else {
-        gs.setText(Integer.toString(value));
-      } 
+  private void fillNeighboringGridSquare(GridSquare currentGridSquare, int value) {
+    if (currentGridSquare != null) {
+      currentGridSquare.setValue(value);
     }
   }
   
@@ -525,11 +534,14 @@ public class Numbreaka {
   }
   
   public enum Powerup {
-    NOTHING, MULTIPLY, VERTICAL, HORIZONTAL, RIGHT_ROTATION, LEFT_ROTATION, REVERSE, CONSOLIDATE;
+    NOTHING, MULTIPLY, VERTICAL, HORIZONTAL, RIGHT_ROTATION, LEFT_ROTATION, REVERSE, CONSOLIDATE, RESURRECT;
   }
   
   private Powerup randomPowerup(){
-    int randomNumber = random.nextInt(Powerup.values().length);
+    int randomNumber = 0;
+    while (randomNumber == 0) {
+      randomNumber = random.nextInt(Powerup.values().length);
+    }
     return Powerup.values()[randomNumber];
 }
   

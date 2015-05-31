@@ -40,7 +40,6 @@ public class GameFrame extends JFrame {
   private boolean isHighScoresScreenInitialized = false;
   private final CardLayout cardLayout = new CardLayout();
   private Font titleFont;
-  private Font gridSquareFont;
   private GridSquare[][] gridSquares;
   private JLabel highScoresButton;
   private JLabel firstHighScore;
@@ -79,22 +78,25 @@ public class GameFrame extends JFrame {
     BoxLayout boxLayout = new BoxLayout(titleBar, BoxLayout.X_AXIS);
 
     titleFont = new Font(gameOptions.getPrimaryFontName(), Font.BOLD, 36);
-    gridSquareFont = new Font(gameOptions.getPrimaryFontName(), Font.PLAIN, 66);
 
     // Creates left box to hold current number
     currentNumberTitleBox = getTitleBox("1");
-    currentNumberTitleBox.setFont(gridSquareFont);
+    currentNumberTitleBox.setFont(gameOptions.getTwoDigitFont());
+    currentNumberTitleBox.setBorder(gameOptions.getBlackLineBorder());
 
     // Creates right box to hold powerups
     powerupTitleBox = getTitleBox("");
-    powerupTitleBox.setFont(new Font(gameOptions.getSecondaryFontName(), Font.BOLD, 43));
+    powerupTitleBox.setFont(new Font(gameOptions.getPrimaryFontName(), Font.BOLD, 37));
+    powerupTitleBox.setBorder(gameOptions.getBlackLineBorder());
+    powerupTitleBox.setForeground(gameOptions.getHighlightColor());
     
     // Creates and designs top game title
     gameTitle = new JLabel(TITLE_TEXT);
     gameTitle.setBackground(gameOptions.getGameBackgroundColor());
     gameTitle.setForeground(Color.BLACK);
-    gameTitle.setMaximumSize(new Dimension(300, 100));
-    gameTitle.setPreferredSize(new Dimension(300, 100));
+    int gameTitleWidth = (gameOptions.getGridX() * 100) - 200;
+    gameTitle.setMaximumSize(new Dimension(gameTitleWidth, 100));
+    gameTitle.setPreferredSize(new Dimension(gameTitleWidth, 100));
     gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
     gameTitle.setOpaque(true);
     gameTitle.setBorder(gameOptions.getBlackLineBorder());
@@ -102,6 +104,7 @@ public class GameFrame extends JFrame {
     gameTitle.setFont(titleFont);
     
     // Modifies entire title bar
+    titleBar.setBackground(gameOptions.getGameBackgroundColor());
     titleBar.setSize(100,100);
     titleBar.setLayout(boxLayout);
     titleBar.add(Box.createRigidArea(new Dimension(0, 100)));
@@ -171,6 +174,7 @@ public class GameFrame extends JFrame {
     gameGrid.setLayout(gridLayout);
     gridLayout.setHgap(0);
     gridLayout.setVgap(0);
+    gameGrid.setBackground(Color.BLACK);
     gameGrid.setBorder(gameOptions.getBlackLineBorder());
     gridSquares = new GridSquare[gameOptions.getGridX()][gameOptions.getGridY()];
     fillGridWithSquares(gameGrid);
@@ -184,14 +188,14 @@ public class GameFrame extends JFrame {
     // Creates gridSquares and fills grid, assigning id numbers
     for (int i = 0; i < gameOptions.getGridY(); i++) {
       for (int j = 0; j < gameOptions.getGridX(); j++) {
-        gridSquares[i][j] = new GridSquare(id, gameOptions.getGameBackgroundColor());
+        gridSquares[i][j] = new GridSquare(id, gameOptions);
         gridSquares[i][j].setBorder(gameOptions.getBlackLineBorder());
         gridSquares[i][j].addMouseListener(gridSquareMouseListener);
         gridSquares[i][j].setOpaque(true);
         gridSquares[i][j].setBackground(gameOptions.getGameBackgroundColor());
         gridSquares[i][j].setForeground(Color.BLACK);
         gridSquares[i][j].setHorizontalAlignment(SwingConstants.CENTER);
-        gridSquares[i][j].setFont(gridSquareFont);
+        gridSquares[i][j].setFont(gameOptions.getTwoDigitFont());
         gameGrid.add(gridSquares[i][j]);
         id++;
       }
@@ -365,6 +369,9 @@ public class GameFrame extends JFrame {
   public void resetGame() {
     newHighScore.setVisible(false);
     powerupTitleBox.setText("");
+    currentNumberTitleBox.setText(Integer.toString(numbreaka.getCurrentNumber()));
+    currentNumberTitleBox.setFont(gameOptions.getTwoDigitFont());
+    displayMainMenu();
     for (GridSquare[] gridSquareArray : gridSquares) {
       for (GridSquare gs : gridSquareArray) {
         gs.reset();
@@ -437,8 +444,21 @@ public class GameFrame extends JFrame {
   }
   
   public void updateHelper() {
-//    getLeftTitleBox().setText(Integer.toString(numbreaka.getCurrentNumber()));
-    currentNumberTitleBox.setText(Integer.toString(numbreaka.getCurrentNumber()));
+    String currentNumberString = Integer.toString(numbreaka.getCurrentNumber());
+    int currentNumberLength = currentNumberString.length();
+    Font currentFont = currentNumberTitleBox.getFont();
+    if (currentNumberLength <= 2 && currentFont != gameOptions.getTwoDigitFont()) {
+      currentNumberTitleBox.setFont(gameOptions.getTwoDigitFont());
+    } else if (currentNumberLength == 3 && currentFont != gameOptions.getThreeDigitFont()) {
+      currentNumberTitleBox.setFont(gameOptions.getThreeDigitFont());
+    } else if (currentNumberLength == 4 && currentFont != gameOptions.getFourDigitFont()) {
+      currentNumberTitleBox.setFont(gameOptions.getFourDigitFont());
+    } else if (currentNumberLength == 5 && currentFont != gameOptions.getFiveDigitFont()) {
+      currentNumberTitleBox.setFont(gameOptions.getFiveDigitFont());
+    } else if (currentNumberLength == 6 && currentFont != gameOptions.getSixDigitFont()) {
+      currentNumberTitleBox.setFont(gameOptions.getSixDigitFont());
+    }
+    currentNumberTitleBox.setText(currentNumberString);
   }
   
   public void updatePowerup(Numbreaka.Powerup powerup) {
@@ -451,13 +471,15 @@ public class GameFrame extends JFrame {
                           break;
       case HORIZONTAL:    powerupTitleBox.setText("L-R");
                           break;
-      case RIGHT_ROTATION:powerupTitleBox.setText("->");
+      case RIGHT_ROTATION:powerupTitleBox.setText("-->");
                           break;
-      case LEFT_ROTATION: powerupTitleBox.setText("<-");
+      case LEFT_ROTATION: powerupTitleBox.setText("<--");
                           break;
-      case REVERSE:       powerupTitleBox.setText("REV");
+      case REVERSE:       powerupTitleBox.setText("<=>");
                           break;
       case CONSOLIDATE:   powerupTitleBox.setText("CON");
+                          break;
+      case RESURRECT:     powerupTitleBox.setText("REZ");
                           break;
       default:            throw new IllegalArgumentException();
     }

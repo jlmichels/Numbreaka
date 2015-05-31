@@ -31,7 +31,9 @@ class NumbreakaKeyListener implements KeyListener {
                 break;
       case '7': numbreaka.grantPowerup(7);
                 break;
-      case '8': numbreaka.incrementCurrentNumber();
+      case '8': numbreaka.grantPowerup(8);
+                break;
+      case 'c': numbreaka.incrementCurrentNumber();
                 gameFrame.updateHelper();
                 break;
       case 'q': numbreaka.quit();

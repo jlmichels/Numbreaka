@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.JLabel;
 
@@ -9,7 +10,7 @@ public class GridSquare extends JLabel {
   private static final long serialVersionUID = 1L;
   private final int gridSquareID;
   private boolean isBroken = false;
-  private final Color backgroundColor;
+  private GameOptions gameOptions;
   private GridSquare gridSquareUp;
   private GridSquare gridSquareDown;
   private GridSquare gridSquareLeft;
@@ -19,9 +20,9 @@ public class GridSquare extends JLabel {
     UP, DOWN, LEFT, RIGHT;
   }
   
-  GridSquare (int id, Color backgroundColor) {
+  GridSquare (int id, GameOptions gameOptions) {
     super();
-    this.backgroundColor = backgroundColor;
+    this.gameOptions = gameOptions;
     gridSquareID = id;
   }
   
@@ -39,14 +40,14 @@ public class GridSquare extends JLabel {
       throw new IllegalStateException();
     }
     isBroken = false;
-    setBackground(backgroundColor);
+    setBackground(gameOptions.getGameBackgroundColor());
   }
   
   // Resets grid square to initial conditions
   public void reset() {
     isBroken = false;
     clear();
-    setBackground(backgroundColor);
+    setBackground(gameOptions.getGameBackgroundColor());
     setForeground(Color.BLACK);
   }
   
@@ -66,7 +67,21 @@ public class GridSquare extends JLabel {
     if (value == 0) {
       clear();
     } else {
-      setText(Integer.toString(value)); 
+      String valueString = Integer.toString(value);
+      Font currentFont = this.getFont();
+      int valueLength = valueString.length();
+      if (valueLength <= 2 && currentFont != gameOptions.getTwoDigitFont()) {
+        this.setFont(gameOptions.getTwoDigitFont());
+      } else if (valueLength == 3 && currentFont != gameOptions.getThreeDigitFont()) {
+        this.setFont(gameOptions.getThreeDigitFont());
+      } else if (valueLength == 4 && currentFont != gameOptions.getFourDigitFont()) {
+        this.setFont(gameOptions.getFourDigitFont());
+      } else if (valueLength == 5 && currentFont != gameOptions.getFiveDigitFont()) {
+        this.setFont(gameOptions.getFiveDigitFont());
+      } else if (valueLength == 6 && currentFont != gameOptions.getSixDigitFont()) {
+        this.setFont(gameOptions.getSixDigitFont());
+      }
+      setText(valueString); 
     }
   }
   
@@ -80,6 +95,7 @@ public class GridSquare extends JLabel {
   
   public void clear() {
     setText("");
+    setFont(gameOptions.getTwoDigitFont());
   }
   
   public GridSquare getGridSquare(Neighbor neighbor) {
