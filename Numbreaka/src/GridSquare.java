@@ -26,11 +26,18 @@ public class GridSquare extends JLabel {
   }
   
   public void breakSquare() {
+    if (isBroken) {
+      throw new IllegalStateException();
+    }
     isBroken = true;
     setBackground(Color.BLACK);
+    clear();
   }
   
   public void repairSquare() {
+    if (!isBroken) {
+      throw new IllegalStateException();
+    }
     isBroken = false;
     setBackground(backgroundColor);
   }
@@ -38,7 +45,7 @@ public class GridSquare extends JLabel {
   // Resets grid square to initial conditions
   public void reset() {
     isBroken = false;
-    setText("");
+    clear();
     setBackground(backgroundColor);
     setForeground(Color.BLACK);
   }
@@ -57,7 +64,7 @@ public class GridSquare extends JLabel {
   
   public void setValue(int value) {
     if (value == 0) {
-      setText("");
+      clear();
     } else {
       setText(Integer.toString(value)); 
     }

@@ -79,7 +79,6 @@ public class Numbreaka {
     while (powerupLocations.size() < 5) {
       int newRandomLocation = random.nextInt(gameOptions.getNumberOfGridSquares());
       if (!powerupLocations.containsKey(newRandomLocation)) {
-        // Generate powerup and put it
         powerupLocations.put(newRandomLocation, randomPowerup());
       } else {
         continue;
@@ -121,6 +120,7 @@ public class Numbreaka {
     gameFrame.resetGame();
     gridSquaresFilled = 0;
     currentNumber = 1;
+    generatePowerupLocations();
     gameFrame.getLeftTitleBox().setText(Integer.toString(currentNumber));
     gameFrame.displayMainMenu();
     gameOver = false;
@@ -148,16 +148,8 @@ public class Numbreaka {
     this.gameOver = gameOver;
   }
   
-  public void incrementGridSquaresFilled() {
-    gridSquaresFilled++;
-  }
-  
   public void incrementCurrentNumber() {
     currentNumber++;
-  }
-  
-  public int getGridSquaresFilled() {
-    return gridSquaresFilled;
   }
   
   public int getCurrentNumber() {
@@ -165,7 +157,11 @@ public class Numbreaka {
   }
    
   public void checkIfGameOver() {
-    if (getGridSquaresFilled() == (gameOptions.getNumberOfGridSquares())) {
+    gridSquaresFilled = determineGridSquaresFilled();
+    if (gridSquaresFilled > gameOptions.getNumberOfGridSquares()) {
+      throw new IllegalStateException();
+    }
+    if (gridSquaresFilled == (gameOptions.getNumberOfGridSquares())) {
       gameOver = true;
       score = calculateScore();
       boolean isNewHighScore = checkIfNewHighScore(score);
@@ -174,6 +170,23 @@ public class Numbreaka {
         addToHighScores(score);
       }
     }
+  }
+  
+  private int determineGridSquaresFilled() {
+    int gridSquaresFilled = 0;
+    GridSquare[][] gridSquares = gameFrame.getGridSquares();
+    for (GridSquare[] gridSquareArray : gridSquares) {
+      for (GridSquare gs : gridSquareArray) {
+        if (gs.isBroken()) {
+          gridSquaresFilled++;
+        } else {
+          if (!gs.isEmpty()) {
+            gridSquaresFilled++;
+          }
+        }
+      }
+    }
+    return gridSquaresFilled;
   }
   
   private void addToHighScores(int score) {
@@ -221,22 +234,13 @@ public class Numbreaka {
   }
   
   public void processGridSquareInteraction(GridSquare gs) {
-    if (currentPowerup != Powerup.CONSOLIDATE) {
-      breakSquare(gs);  
+    if (currentPowerup != Powerup.CONSOLIDATE && currentPowerup != Powerup.RIGHT_ROTATION && currentPowerup != Powerup.LEFT_ROTATION) {
+      gs.breakSquare();
     }
     processNeighbors(gs);
     incrementCurrentNumber();
     gameFrame.updateHelper();
     checkIfGameOver();
-  }
-  
-  private void breakSquare(GridSquare gs) {
-    gs.breakSquare();
-    if (gs.isEmpty()) {
-      incrementGridSquaresFilled();
-    } else {
-      gs.clear();
-    }
   }
   
   private void processNeighbors(GridSquare currentGridSquare) {
@@ -248,12 +252,15 @@ public class Numbreaka {
     }
     currentPowerup = getNewPowerup(currentGridSquare);
     gameFrame.updatePowerup(currentPowerup);
+    System.out.println(currentPowerup.name());
   }
   
   private Powerup getNewPowerup(GridSquare currentGridSquare) {
     int id = currentGridSquare.getID();
     if (powerupLocations.containsKey(id)) {
-      return powerupLocations.get(id);
+      Powerup newPowerup = powerupLocations.get(id);
+      powerupLocations.remove(id);
+      return newPowerup;
     } else {
       return Powerup.NOTHING;
     }
@@ -279,10 +286,10 @@ public class Numbreaka {
     }
   }
   
+  // TODO Not the best way; why does Numbreaka know about GS enum?
   private void addNormally(GridSquare gs) {
     for (GridSquare.Neighbor neighbor : GridSquare.Neighbor.values()) {
       GridSquare neighboringGridSquare = gs.getGridSquare(neighbor);
-      // not the right way to do this
       addSquare(neighboringGridSquare);
     }
   }
@@ -291,7 +298,6 @@ public class Numbreaka {
     if (neighboringGridSquare != null && !neighboringGridSquare.isBroken()) {
       if (neighboringGridSquare.isEmpty()) {
         fillNeighboringGridSquare(neighboringGridSquare, currentNumber);
-        incrementGridSquaresFilled();
       } else {
         int value = neighboringGridSquare.getValue() + currentNumber;
         fillNeighboringGridSquare(neighboringGridSquare, value);
@@ -309,7 +315,6 @@ public class Numbreaka {
       if (neighboringGridSquare != null && !neighboringGridSquare.isBroken()) {
         if (neighboringGridSquare.isEmpty()) {
           fillNeighboringGridSquare(neighboringGridSquare, currentNumber);
-          incrementGridSquaresFilled();
         } else {
           int value = neighboringGridSquare.getValue() * 2;
           fillNeighboringGridSquare(neighboringGridSquare, value);
@@ -347,30 +352,39 @@ public class Numbreaka {
     int rightValue = getValueForRotation(right);
     boolean rightBroken = getBrokenForRotation(right);
     
-    swapValue(up, leftValue);
-    swapBroken(up, leftBroken);
-    swapValue(right, upValue);
-    swapBroken(right, upBroken);
-    swapValue(down, rightValue);
-    swapBroken(down, rightBroken);
-    swapValue(left, downValue);
-    swapBroken(left, downBroken);
+    totalSwap(up, leftValue, leftBroken);
+    totalSwap(right, upValue, upBroken);
+    totalSwap(down, rightValue, rightBroken);
+    totalSwap(left, downValue, downBroken);
+  }
+  
+  private void totalSwap(GridSquare gs, int val, boolean swapIsBroken) {
+    swapBrokenState(gs, swapIsBroken);
+    swapValue(gs, val);
   }
   
   private void swapValue(GridSquare gridSquare, int newValue) {
-    if (gridSquare != null) {
-      gridSquare.setValue(newValue);
+    if (gridSquare != null && !gridSquare.isBroken()) {
+      if (gridSquare.isEmpty()) {
+        gridSquare.setValue(newValue);
+      } else {
+        gridSquare.setValue(newValue);  
+      }
     } else {
       return;
     }
   }
   
-  private void swapBroken(GridSquare gridSquare, boolean isBroken) {
+  private void swapBrokenState(GridSquare gridSquare, boolean swapIsBroken) {
     if (gridSquare != null) {
-      if (isBroken) {
+      if ((gridSquare.isBroken() && swapIsBroken)) {
+        return;
+      } else if (gridSquare.isBroken() && !swapIsBroken) {
+        gridSquare.repairSquare();
+      } else if (!gridSquare.isBroken() && swapIsBroken) {
         gridSquare.breakSquare();
       } else {
-        gridSquare.repairSquare();
+        return;
       }
     } else {
       return;
@@ -408,14 +422,10 @@ public class Numbreaka {
     int rightValue = getValueForRotation(right);
     boolean rightBroken = getBrokenForRotation(right);
     
-    swapValue(up, rightValue);
-    swapBroken(up, rightBroken);
-    swapValue(right, downValue);
-    swapBroken(right, downBroken);
-    swapValue(down, leftValue);
-    swapBroken(down, leftBroken);
-    swapValue(left, upValue);
-    swapBroken(left, upBroken);
+    totalSwap(up, rightValue, rightBroken);
+    totalSwap(right, downValue, downBroken);
+    totalSwap(down, leftValue, leftBroken);
+    totalSwap(left, upValue, upBroken);
   }
   
   // Reverses values of all neighbors (Ex: 21 -> 12)
@@ -504,7 +514,7 @@ public class Numbreaka {
       if (value == 0) {
         gs.clear();
       } else {
-        gs.setText(Integer.toString(value)); 
+        gs.setText(Integer.toString(value));
       } 
     }
   }
