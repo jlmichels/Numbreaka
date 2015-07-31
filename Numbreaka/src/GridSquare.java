@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 
 public class GridSquare extends JLabel {
   
-  private static final long serialVersionUID = 1L;
   private final int gridSquareID;
   private boolean isBroken = false;
   private GameOptions gameOptions;

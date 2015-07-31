@@ -20,7 +20,6 @@ import javax.swing.WindowConstants;
 
 public class GameFrame extends JFrame {
 
-  private static final long serialVersionUID = 1L; // necessary?
   private static final String START_MENU_ITEM = "START";
   private static final String QUIT_MENU_ITEM = "QUIT";
   private static final String HIGH_SCORES_MENU_ITEM = "HIGH SCORES";
