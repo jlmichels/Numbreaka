@@ -386,12 +386,10 @@ public class GameFrame extends JFrame {
   
   public void displayMainMenu() {
     cardLayout.show(cardHolder, MAIN_MENU_CARD);
-    this.repaint();
   }
   
   public void displayGameWindow() {
     cardLayout.show(cardHolder, GAME_WINDOW_CARD);
-    this.repaint();
   }
 
   public void displayHighScoresScreen() {
@@ -419,7 +417,6 @@ public class GameFrame extends JFrame {
       thirdHighScore.setText(DEFAULT_THIRD_HIGH_SCORE);
     }
     cardLayout.show(cardHolder, HIGH_SCORES_CARD);
-    this.repaint();
   }
   
   public void displayFinalScorePopup(int score, boolean isNewHighScore) {
@@ -429,7 +426,6 @@ public class GameFrame extends JFrame {
       newHighScore.setVisible(true);
     }
     cardLayout.show(cardHolder, FINAL_SCORE_CARD);
-    this.repaint();
   }
    
   public GridSquare[][] getGridSquares() {
