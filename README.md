@@ -44,3 +44,6 @@ h    Resets the high score at any time. If pressed on the high scores screen, th
 
 # Feedback
 Game feedback and code reviews are welcomed.
+
+# Thanks
+Redditor deltageek for a helpful code review.
