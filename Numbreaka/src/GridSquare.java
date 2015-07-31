@@ -67,20 +67,15 @@ public class GridSquare extends JLabel {
       clear();
     } else {
       String valueString = Integer.toString(value);
-      Font currentFont = this.getFont();
       int valueLength = valueString.length();
-      if (valueLength <= 2 && currentFont != gameOptions.getTwoDigitFont()) {
-        this.setFont(gameOptions.getTwoDigitFont());
-      } else if (valueLength == 3 && currentFont != gameOptions.getThreeDigitFont()) {
-        this.setFont(gameOptions.getThreeDigitFont());
-      } else if (valueLength == 4 && currentFont != gameOptions.getFourDigitFont()) {
-        this.setFont(gameOptions.getFourDigitFont());
-      } else if (valueLength == 5 && currentFont != gameOptions.getFiveDigitFont()) {
-        this.setFont(gameOptions.getFiveDigitFont());
-      } else if (valueLength == 6 && currentFont != gameOptions.getSixDigitFont()) {
-        this.setFont(gameOptions.getSixDigitFont());
-      }
+      updateFontIfNecessary(gameOptions.getGridSquareFontOfSize(valueLength));
       setText(valueString); 
+    }
+  }
+  
+  private void updateFontIfNecessary(Font newFont) {
+    if (getFont() != newFont) {
+      setFont(newFont);
     }
   }
   
@@ -94,7 +89,7 @@ public class GridSquare extends JLabel {
   
   public void clear() {
     setText("");
-    setFont(gameOptions.getTwoDigitFont());
+    setFont(gameOptions.getGridSquareDefaultFont());
   }
   
   public GridSquare getGridSquare(Neighbor neighbor) {

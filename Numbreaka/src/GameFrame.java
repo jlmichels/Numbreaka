@@ -81,7 +81,7 @@ public class GameFrame extends JFrame {
 
     // Creates left box to hold current number
     currentNumberTitleBox = getTitleBox("1");
-    currentNumberTitleBox.setFont(gameOptions.getTwoDigitFont());
+    currentNumberTitleBox.setFont(gameOptions.getGridSquareDefaultFont());
     currentNumberTitleBox.setBorder(gameOptions.getBlackLineBorder());
 
     // Creates right box to hold powerups
@@ -195,7 +195,7 @@ public class GameFrame extends JFrame {
         gridSquares[i][j].setBackground(gameOptions.getGameBackgroundColor());
         gridSquares[i][j].setForeground(Color.BLACK);
         gridSquares[i][j].setHorizontalAlignment(SwingConstants.CENTER);
-        gridSquares[i][j].setFont(gameOptions.getTwoDigitFont());
+        gridSquares[i][j].setFont(gameOptions.getGridSquareDefaultFont());
         gameGrid.add(gridSquares[i][j]);
         id++;
       }
@@ -375,7 +375,7 @@ public class GameFrame extends JFrame {
     newHighScore.setVisible(false);
     powerupTitleBox.setText("");
     currentNumberTitleBox.setText(Integer.toString(numbreaka.getCurrentNumber()));
-    currentNumberTitleBox.setFont(gameOptions.getTwoDigitFont());
+    currentNumberTitleBox.setFont(gameOptions.getGridSquareDefaultFont());
     displayMainMenu();
     for (GridSquare[] gridSquareArray : gridSquares) {
       for (GridSquare gs : gridSquareArray) {
@@ -447,19 +447,14 @@ public class GameFrame extends JFrame {
   public void updateHelper() {
     String currentNumberString = Integer.toString(numbreaka.getCurrentNumber());
     int currentNumberLength = currentNumberString.length();
-    Font currentFont = currentNumberTitleBox.getFont();
-    if (currentNumberLength <= 2 && currentFont != gameOptions.getTwoDigitFont()) {
-      currentNumberTitleBox.setFont(gameOptions.getTwoDigitFont());
-    } else if (currentNumberLength == 3 && currentFont != gameOptions.getThreeDigitFont()) {
-      currentNumberTitleBox.setFont(gameOptions.getThreeDigitFont());
-    } else if (currentNumberLength == 4 && currentFont != gameOptions.getFourDigitFont()) {
-      currentNumberTitleBox.setFont(gameOptions.getFourDigitFont());
-    } else if (currentNumberLength == 5 && currentFont != gameOptions.getFiveDigitFont()) {
-      currentNumberTitleBox.setFont(gameOptions.getFiveDigitFont());
-    } else if (currentNumberLength == 6 && currentFont != gameOptions.getSixDigitFont()) {
-      currentNumberTitleBox.setFont(gameOptions.getSixDigitFont());
-    }
+    updateHelperFontIfNecessary(gameOptions.getGridSquareFontOfSize(currentNumberLength));
     currentNumberTitleBox.setText(currentNumberString);
+  }
+  
+  private void updateHelperFontIfNecessary(Font newFont) {
+    if (currentNumberTitleBox.getFont() != newFont) {
+      currentNumberTitleBox.setFont(newFont);
+    }
   }
   
   public void updatePowerup(Numbreaka.Powerup powerup) {
