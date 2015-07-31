@@ -437,7 +437,6 @@ public class Numbreaka {
   private void reverseNeighbors(GridSquare gs) {
     for (GridSquare.Neighbor neighbor : GridSquare.Neighbor.values()) {
       GridSquare neighboringGridSquare = gs.getGridSquare(neighbor);
-      // not the right way to do this
       reverseValueOfNeighbor(neighboringGridSquare);
     }
   }
@@ -455,14 +454,13 @@ public class Numbreaka {
       return;
     }
   }
-  
+
   private int reverseValue(int value) {
     String stringValue = Integer.toString(value);
-    StringBuilder sb = new StringBuilder();
-    for (int i = stringValue.length() - 1; i >= 0; i--) {
-      sb.append(stringValue.charAt(i));
-    }
+    StringBuilder sb = new StringBuilder(stringValue);
+    sb.reverse();
     return Integer.parseInt(sb.toString());
+    
   }
   
   // Developer use
