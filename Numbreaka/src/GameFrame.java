@@ -351,10 +351,10 @@ public class GameFrame extends JFrame {
   private void setupGameFrame(JPanel titleBar) {
     BoxLayout boxLayout = new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS);
     
-    this.getContentPane().setLayout(boxLayout);
-    this.getContentPane().add(titleBar);
-    this.getContentPane().setBackground(gameOptions.getGameBackgroundColor());
-    this.getContentPane().add(cardHolder);
+    setLayout(boxLayout);
+    add(titleBar);
+    setBackground(gameOptions.getGameBackgroundColor());
+    add(cardHolder);
     this.setTitle(WINDOW_TITLE);
     this.addKeyListener(new NumbreakaKeyListener(numbreaka, this));
     int width = gameOptions.getGridX()*gameOptions.getGridSquareWidth()+8;
