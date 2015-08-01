@@ -35,9 +35,4 @@ public class GameTextMouseListener extends MouseAdapter {
     JLabel gameTextLabel = (JLabel) e.getSource();
     gameFrame.returnColorAsNecessary(gameTextLabel);
   }
-  
-  
-  @Override
-  public void mouseClicked(MouseEvent e) {
-  }
 }
