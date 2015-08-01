@@ -1,7 +1,7 @@
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-class NumbreakaKeyListener implements KeyListener {
+class NumbreakaKeyListener extends KeyAdapter {
   
   private Numbreaka numbreaka;
   private GameFrame gameFrame;
@@ -54,7 +54,4 @@ class NumbreakaKeyListener implements KeyListener {
     }
   }
 
-  @Override
-  public void keyTyped(KeyEvent arg0) {
-  }
 }
