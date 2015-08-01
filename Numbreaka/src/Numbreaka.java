@@ -18,9 +18,9 @@ import javax.swing.JOptionPane;
 
 public class Numbreaka {
   
-  private static GameFrame gameFrame;
+  private GameFrame gameFrame;
   private static final GameOptions gameOptions = new GameOptions();
-  private static final Random random = new Random();
+  private final Random random = new Random();
   private ArrayList<HighScore> highScores;
   private Map<Integer, Powerup> powerupLocations = new HashMap<Integer, Powerup>();
   private boolean gameOver = false;
