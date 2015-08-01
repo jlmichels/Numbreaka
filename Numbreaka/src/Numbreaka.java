@@ -265,23 +265,32 @@ public class Numbreaka {
 
   private void performPowerupAction(GridSquare currentGridSquare, Powerup powerup) {
     switch (powerup) {
-      case MULTIPLY:      multiply(currentGridSquare);
-                          break;
-      case VERTICAL:      addVertically(currentGridSquare);
-                          break;
-      case HORIZONTAL:    addHorizontally(currentGridSquare);
-                          break;
-      case RIGHT_ROTATION:rotateNeighborsRight(currentGridSquare);
-                          break;
-      case LEFT_ROTATION: rotateNeighborsLeft(currentGridSquare);
-                          break;
-      case REVERSE:       reverseNeighbors(currentGridSquare);
-                          break;
-      case CONSOLIDATE:   consolidateNeighbors(currentGridSquare);
-                          break;
-      case RESURRECT:     resurrect(currentGridSquare);
-                          break;
-      default:            throw new IllegalArgumentException();
+    case MULTIPLY:
+      multiply(currentGridSquare);
+      break;
+    case VERTICAL:
+      addVertically(currentGridSquare);
+      break;
+    case HORIZONTAL:
+      addHorizontally(currentGridSquare);
+      break;
+    case RIGHT_ROTATION:
+      rotateNeighborsRight(currentGridSquare);
+      break;
+    case LEFT_ROTATION:
+      rotateNeighborsLeft(currentGridSquare);
+      break;
+    case REVERSE:
+      reverseNeighbors(currentGridSquare);
+      break;
+    case CONSOLIDATE:
+      consolidateNeighbors(currentGridSquare);
+      break;
+    case RESURRECT:
+      resurrect(currentGridSquare);
+      break;
+    default:
+      throw new IllegalArgumentException();
     }
   }
   
@@ -462,31 +471,40 @@ public class Numbreaka {
   // Developer use
   public void grantPowerup(int number) {
     switch (number) {
-      case 1: currentPowerup = Powerup.MULTIPLY;
-              gameFrame.updatePowerup(currentPowerup);
-              break;
-      case 2: currentPowerup = Powerup.VERTICAL;
-              gameFrame.updatePowerup(currentPowerup);
-              break;
-      case 3: currentPowerup = Powerup.HORIZONTAL;
-              gameFrame.updatePowerup(currentPowerup);
-              break;
-      case 4: currentPowerup = Powerup.RIGHT_ROTATION;
-              gameFrame.updatePowerup(currentPowerup);
-              break;
-      case 5: currentPowerup = Powerup.LEFT_ROTATION;
-              gameFrame.updatePowerup(currentPowerup);
-              break;
-      case 6: currentPowerup = Powerup.REVERSE;
-              gameFrame.updatePowerup(currentPowerup);
-              break;
-      case 7: currentPowerup = Powerup.CONSOLIDATE;
-              gameFrame.updatePowerup(currentPowerup);
-              break;
-      case 8: currentPowerup = Powerup.RESURRECT;
-              gameFrame.updatePowerup(currentPowerup);
-              break;
-      default: throw new IllegalArgumentException();
+    case 1:
+      currentPowerup = Powerup.MULTIPLY;
+      gameFrame.updatePowerup(currentPowerup);
+      break;
+    case 2:
+      currentPowerup = Powerup.VERTICAL;
+      gameFrame.updatePowerup(currentPowerup);
+      break;
+    case 3:
+      currentPowerup = Powerup.HORIZONTAL;
+      gameFrame.updatePowerup(currentPowerup);
+      break;
+    case 4:
+      currentPowerup = Powerup.RIGHT_ROTATION;
+      gameFrame.updatePowerup(currentPowerup);
+      break;
+    case 5:
+      currentPowerup = Powerup.LEFT_ROTATION;
+      gameFrame.updatePowerup(currentPowerup);
+      break;
+    case 6:
+      currentPowerup = Powerup.REVERSE;
+      gameFrame.updatePowerup(currentPowerup);
+      break;
+    case 7:
+      currentPowerup = Powerup.CONSOLIDATE;
+      gameFrame.updatePowerup(currentPowerup);
+      break;
+    case 8:
+      currentPowerup = Powerup.RESURRECT;
+      gameFrame.updatePowerup(currentPowerup);
+      break;
+    default:
+      throw new IllegalArgumentException();
     }
   }
   

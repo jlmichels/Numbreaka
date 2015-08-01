@@ -459,25 +459,35 @@ public class GameFrame extends JFrame {
   
   public void updatePowerup(Numbreaka.Powerup powerup) {
     switch (powerup) {
-      case NOTHING:       powerupTitleBox.setText("");
-                          break;
-      case MULTIPLY:      powerupTitleBox.setText("x2");
-                          break;
-      case VERTICAL:      powerupTitleBox.setText("U-D");
-                          break;
-      case HORIZONTAL:    powerupTitleBox.setText("L-R");
-                          break;
-      case RIGHT_ROTATION:powerupTitleBox.setText("-->");
-                          break;
-      case LEFT_ROTATION: powerupTitleBox.setText("<--");
-                          break;
-      case REVERSE:       powerupTitleBox.setText("<=>");
-                          break;
-      case CONSOLIDATE:   powerupTitleBox.setText("CON");
-                          break;
-      case RESURRECT:     powerupTitleBox.setText("REZ");
-                          break;
-      default:            throw new IllegalArgumentException();
+    case NOTHING:
+      powerupTitleBox.setText("");
+      break;
+    case MULTIPLY:
+      powerupTitleBox.setText("x2");
+      break;
+    case VERTICAL:
+      powerupTitleBox.setText("U-D");
+      break;
+    case HORIZONTAL:
+      powerupTitleBox.setText("L-R");
+      break;
+    case RIGHT_ROTATION:
+      powerupTitleBox.setText("-->");
+      break;
+    case LEFT_ROTATION:
+      powerupTitleBox.setText("<--");
+      break;
+    case REVERSE:
+      powerupTitleBox.setText("<=>");
+      break;
+    case CONSOLIDATE:
+      powerupTitleBox.setText("CON");
+      break;
+    case RESURRECT:
+      powerupTitleBox.setText("REZ");
+      break;
+    default:
+      throw new IllegalArgumentException();
     }
   }
   

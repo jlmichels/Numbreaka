@@ -94,11 +94,16 @@ public class GridSquare extends JLabel {
   
   public GridSquare getGridSquare(Neighbor neighbor) {
     switch (neighbor) {
-      case UP: return gridSquareUp;
-      case DOWN: return gridSquareDown;
-      case LEFT: return gridSquareLeft;
-      case RIGHT: return gridSquareRight;
-      default: throw new IllegalArgumentException();
+    case UP:
+      return gridSquareUp;
+    case DOWN:
+      return gridSquareDown;
+    case LEFT:
+      return gridSquareLeft;
+    case RIGHT:
+      return gridSquareRight;
+    default:
+      throw new IllegalArgumentException();
     }
   }
   

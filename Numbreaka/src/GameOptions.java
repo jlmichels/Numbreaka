@@ -22,12 +22,18 @@ public class GameOptions {
   
   public Font getGridSquareFontOfSize(int size) {
     switch (size) {
-    case 2:   return makeGridSquareFont(66);
-    case 3:   return makeGridSquareFont(49);
-    case 4:   return makeGridSquareFont(37);
-    case 5:   return makeGridSquareFont(30);
-    case 6:   return makeGridSquareFont(25);
-    default:  return makeGridSquareFont(66);
+    case 2:
+      return makeGridSquareFont(66);
+    case 3:
+      return makeGridSquareFont(49);
+    case 4:
+      return makeGridSquareFont(37);
+    case 5:
+      return makeGridSquareFont(30);
+    case 6:
+      return makeGridSquareFont(25);
+    default:
+      return makeGridSquareFont(66);
     }
   }
   
