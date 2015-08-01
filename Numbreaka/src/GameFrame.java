@@ -35,8 +35,8 @@ public class GameFrame extends JFrame {
   private static final String DEFAULT_SECOND_HIGH_SCORE = "2: AAA 000";
   private static final String DEFAULT_THIRD_HIGH_SCORE = "3: AAA 000";
   private final GameOptions gameOptions;
-  private final GameTextMouseListener menuObjectMouseListener;
-  private final GridSquareMouseListener gridSquareMouseListener;
+  private final GameTextMouseAdapter menuObjectMouseListener;
+  private final GridSquareMouseAdapter gridSquareMouseListener;
   private boolean isHighScoresScreenInitialized = false;
   private final CardLayout cardLayout = new CardLayout();
   private Font titleFont;
@@ -57,8 +57,8 @@ public class GameFrame extends JFrame {
   public GameFrame(Numbreaka numbreaka, GameOptions gameOptions) {
     this.numbreaka = numbreaka;
     this.gameOptions = gameOptions;
-    menuObjectMouseListener = new GameTextMouseListener(this);
-    gridSquareMouseListener = new GridSquareMouseListener(numbreaka);
+    menuObjectMouseListener = new GameTextMouseAdapter(this);
+    gridSquareMouseListener = new GridSquareMouseAdapter(numbreaka);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         numbreaka.quit();
@@ -356,7 +356,7 @@ public class GameFrame extends JFrame {
     setBackground(gameOptions.getGameBackgroundColor());
     add(cardHolder);
     this.setTitle(WINDOW_TITLE);
-    this.addKeyListener(new NumbreakaKeyListener(numbreaka, this));
+    this.addKeyListener(new NumbreakaKeyAdapter(numbreaka, this));
     int width = gameOptions.getGridX()*gameOptions.getGridSquareWidth()+8;
     int height = gameOptions.getGridY()*gameOptions.getGridSquareHeight()+gameOptions.getGridY()+128;
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

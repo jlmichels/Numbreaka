@@ -2,11 +2,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-public class GridSquareMouseListener extends MouseAdapter {
+public class GridSquareMouseAdapter extends MouseAdapter {
 
   private final Numbreaka numbreaka;
   
-  public GridSquareMouseListener(Numbreaka numbreaka) {
+  public GridSquareMouseAdapter(Numbreaka numbreaka) {
     this.numbreaka = numbreaka;
   }
   

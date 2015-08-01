@@ -1,12 +1,12 @@
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-class NumbreakaKeyListener extends KeyAdapter {
+class NumbreakaKeyAdapter extends KeyAdapter {
   
   private Numbreaka numbreaka;
   private GameFrame gameFrame;
   
-  public NumbreakaKeyListener(Numbreaka numbreaka, GameFrame gameFrame) {
+  public NumbreakaKeyAdapter(Numbreaka numbreaka, GameFrame gameFrame) {
     this.numbreaka = numbreaka;
     this.gameFrame = gameFrame;
   }

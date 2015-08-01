@@ -3,11 +3,11 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 
 
-public class GameTextMouseListener extends MouseAdapter {
+public class GameTextMouseAdapter extends MouseAdapter {
 
   private final GameFrame gameFrame;
   
-  public GameTextMouseListener(GameFrame gameFrame) {
+  public GameTextMouseAdapter(GameFrame gameFrame) {
     this.gameFrame = gameFrame;
   }
 
