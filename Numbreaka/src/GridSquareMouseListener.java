@@ -1,8 +1,8 @@
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 
-public class GridSquareMouseListener implements MouseListener {
+public class GridSquareMouseListener extends MouseAdapter {
 
   private final Numbreaka numbreaka;
   
@@ -16,22 +16,6 @@ public class GridSquareMouseListener implements MouseListener {
       GridSquare gs = (GridSquare) e.getSource();
       numbreaka.processGridSquareInteraction(gs); 
     }
-  }
-
-  @Override
-  public void mouseClicked(MouseEvent e) {
-  }
-
-  @Override
-  public void mouseEntered(MouseEvent e) {
-  }
-
-  @Override
-  public void mouseExited(MouseEvent e) {
-  }
-  
-  @Override
-  public void mouseReleased(MouseEvent e) {
   }
 
 }
