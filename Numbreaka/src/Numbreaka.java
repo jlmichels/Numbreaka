@@ -51,13 +51,10 @@ public class Numbreaka {
   @SuppressWarnings("unchecked")
   private ArrayList<HighScore> loadHighScores() {
     ArrayList<HighScore> highScores = null;
-    try
-    {
-       FileInputStream fileIn = new FileInputStream("highScores.ser");
-       ObjectInputStream in = new ObjectInputStream(fileIn);
+    try (FileInputStream fileIn = new FileInputStream("highScores.ser");
+        ObjectInputStream in = new ObjectInputStream(fileIn); 
+    ) {
        highScores = (ArrayList<HighScore>) in.readObject();
-       in.close();
-       fileIn.close();
     } catch(FileNotFoundException fnfe) {
       // No previous high scores; create new List
       return new ArrayList<HighScore>();
@@ -92,12 +89,11 @@ public class Numbreaka {
   }
   
   private void saveHighScores() {
-    try {
-     FileOutputStream fileOut = new FileOutputStream("highScores.ser");
-     ObjectOutputStream out = new ObjectOutputStream(fileOut);
+    try (
+      FileOutputStream fileOut = new FileOutputStream("highScores.ser");
+      ObjectOutputStream out = new ObjectOutputStream(fileOut);   
+    ) {
      out.writeObject(highScores);
-     out.close();
-     fileOut.close();
     } catch(IOException e) {
       e.printStackTrace();
     }
