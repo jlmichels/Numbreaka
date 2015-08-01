@@ -504,22 +504,31 @@ public class GameFrame extends JFrame {
   
   public void performActionAsNecessary(JLabel gameTextLabel) {
     String gameText = gameTextLabel.getText();
-    if (gameText.equals(START_MENU_ITEM)) {
+    switch (gameText) {
+    case START_MENU_ITEM:
       displayGameWindow();
-    } else if (gameText.equals(QUIT_MENU_ITEM)) {
+      break;
+    case QUIT_MENU_ITEM:
       numbreaka.quit();
-    } else if (gameText.equals(HIGH_SCORES_MENU_ITEM)) {
+      break;
+    case HIGH_SCORES_MENU_ITEM:
       displayHighScoresScreen();
-    } else if (gameText.equals(RETRY_MENU_ITEM)) {
+      break;
+    case RETRY_MENU_ITEM:
       highlight(gameTextLabel);
       numbreaka.resetGame();
       displayGameWindow();
-    } else if (gameText.equals(TITLE_TEXT)) {
+      break;
+    case TITLE_TEXT:
       highlight(gameTextLabel);
       numbreaka.resetGame();
       displayMainMenu();
-    } else if (gameText.equals(RETURN_TO_MAIN_MENU_MENU_ITEM)) {
+      break;
+    case RETURN_TO_MAIN_MENU_MENU_ITEM:
       displayMainMenu();
+      break;
+    default:
+      // Do nothing
     }
   }
   
